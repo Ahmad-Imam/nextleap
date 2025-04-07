@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  clerkUserId String   @unique
+  email       String   @unique
+  name        String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Profile fields
+  bio         String?
+  experience  Int? // Years of experience
+  skills      String[]
+  resume      Resume?
+  coverLetter CoverLetter[]
+  jobs        Job[]
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String   @unique // One resume per user
+  user      User     @relation(fields: [userId], references: [id])
+  content   String   @db.Text // Markdown content
+  atsScore  Float?
+  feedback  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CoverLetter {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  content        String // Markdown content
+  jobDescription String?
+  companyName    String
+  jobTitle       String
+  status         String   @default("draft")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  jobId          String?  @unique
+  job            Job?     @relation(fields: [jobId], references: [id])
+
+  @@index([userId])
+}
+
+model Job {
+  id           String       @id @default(cuid())
+  title        String
+  companyName  String
+  location     String?
+  description  String
+  requirements String? // Skills required
+  salary       Float?
+  type         String?
+  status       String       @default("open")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+  CoverLetter  CoverLetter?
+
+  @@index([companyName])
+}
