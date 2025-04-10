@@ -24,8 +24,8 @@ model User {
 
   // Profile fields
   bio         String?
-  experience  Int? // Years of experience
-  skills      String[]
+  skills      Json[]
+  socials     Json[]
   resume      Resume?
   coverLetter CoverLetter[]
   jobs        Job[]
