@@ -16,7 +16,7 @@ export default async function OnboardingPage() {
 
   return (
     <main className="flex items-center justify-center min-h-screen">
-      <OnboardingForm industries={[]} />
+      <OnboardingForm />
     </main>
   );
 }

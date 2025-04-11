@@ -43,37 +43,38 @@ model Resume {
 }
 
 model CoverLetter {
-  id             String   @id @default(cuid())
-  userId         String
-  user           User     @relation(fields: [userId], references: [id])
-  content        String // Markdown content
-  jobDescription String?
-  companyName    String
-  jobTitle       String
-  status         String   @default("draft")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  jobId          String?  @unique
-  job            Job?     @relation(fields: [jobId], references: [id])
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jobId     String?  @unique
+  job       Job?     @relation(fields: [jobId], references: [id])
 
   @@index([userId])
 }
 
 model Job {
-  id           String       @id @default(cuid())
-  title        String
-  companyName  String
-  location     String?
-  description  String
-  requirements String? // Skills required
-  salary       Float?
-  type         String?
-  status       String       @default("open")
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  userId       String
-  user         User         @relation(fields: [userId], references: [id])
-  CoverLetter  CoverLetter?
+  id               String       @id @default(cuid())
+  jobTitle         String
+  companyName      String
+  location         String?
+  jobDescription   String
+  jobRequirements  String[]
+  salary           String?
+  jobType          String?
+  level            String?
+  industry         String?
+  responsibilities String[]
+  applicationLink  String?
+  status           String       @default("open")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  userId           String
+  user             User         @relation(fields: [userId], references: [id])
+  coverLetterId    String?
+  coverLetter      CoverLetter?
 
   @@index([companyName])
 }
