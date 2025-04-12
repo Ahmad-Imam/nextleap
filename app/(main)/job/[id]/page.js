@@ -1,6 +1,7 @@
+import { getJobPostById } from "@/actions/job";
 import JobDetails from "./_components/JobDetails";
 
-export default function JobSinglePage() {
+export default async function JobSinglePage({ params }) {
   const jobPosting = {
     jobTitle: "Software Engineer",
     jobDescription:
@@ -22,10 +23,15 @@ export default function JobSinglePage() {
       "Ensure code quality and performance.",
     ],
   };
+  const { id } = await params;
+  console.log("id", id);
+
+  const jobPost = await getJobPostById(id);
+  // console.log("jobPost", jobPost);
 
   return (
     <main className="flex items-center justify-center min-h-screen">
-      <JobDetails jobPosting={jobPosting} />
+      <JobDetails jobPost={jobPost} />
     </main>
   );
 }

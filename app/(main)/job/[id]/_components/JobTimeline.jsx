@@ -16,9 +16,12 @@ import {
   XCircleIcon,
   CalendarDaysIcon,
 } from "lucide-react";
+import useFetch from "@/hooks/useFetch";
+import { addTimelinePoint } from "@/actions/job";
+import { toast } from "sonner";
 
-export function ApplicationTimeline() {
-  const [timelinePoints, setTimelinePoints] = useState([]);
+export function ApplicationTimeline({ timeline, jobId }) {
+  const [timelinePoints, setTimelinePoints] = useState(timeline ?? []);
   const [interviewDate, setInterviewDate] = useState(undefined);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -30,47 +33,76 @@ export function ApplicationTimeline() {
     (point) => point.type === "interview"
   ).length;
 
-  const handleApply = () => {
+  const {
+    data: jobPost,
+    error: jobPostError,
+    loading: jobPostLoading,
+    fn: updateJobPostTimeline,
+  } = useFetch(addTimelinePoint);
+
+  const handleApply = async () => {
     if (isApplied) return;
 
-    setTimelinePoints([
-      {
-        id: "applied",
-        type: "applied",
-        date: new Date(),
-        position: "left",
-      },
-    ]);
+    const newTimelinePoint = {
+      id: "applied",
+      type: "applied",
+      date: new Date(),
+      position: "left",
+    };
+
+    await updateJobPostTimeline(jobId, newTimelinePoint);
+    if (jobPostError) {
+      console.error("Error updating job post timeline:", jobPostError);
+      toast.error("Failed to update job post timeline.");
+      return;
+    }
+    toast.success("Status updated successfully.");
+
+    setTimelinePoints([...timelinePoints, newTimelinePoint]);
   };
 
-  const handleAddInterview = () => {
+  const handleAddInterview = async () => {
     if (!interviewDate || isFinalized) return;
 
-    setTimelinePoints((prev) => [
-      ...prev,
-      {
-        id: `interview-${interviewCount + 1}`,
-        type: "interview",
-        date: interviewDate,
-        position: prev.length % 2 === 0 ? "left" : "right",
-      },
-    ]);
+    const newTimelinePoint = {
+      id: `interview-${interviewCount + 1}`,
+      type: "interview",
+      date: interviewDate,
+      position: timelinePoints.length % 2 === 0 ? "left" : "right",
+    };
+
+    await updateJobPostTimeline(jobId, newTimelinePoint);
+
+    if (jobPostError) {
+      console.error("Error updating job post timeline:", jobPostError);
+      toast.error("Failed to update job post timeline.");
+      return;
+    }
+    setTimelinePoints((prev) => [...prev, newTimelinePoint]);
     setInterviewDate(undefined);
     setCalendarOpen(false);
+    toast.success("Status updated successfully.");
   };
 
-  const handleSetStatus = (status) => {
+  const handleSetStatus = async (status) => {
     if (isFinalized) return;
 
-    setTimelinePoints((prev) => [
-      ...prev,
-      {
-        id: status,
-        type: status,
-        date: new Date(),
-        position: prev.length % 2 === 0 ? "left" : "right",
-      },
-    ]);
+    const newTimelinePoint = {
+      id: status,
+      type: status,
+      date: new Date(),
+      position: timelinePoints.length % 2 === 0 ? "left" : "right",
+    };
+
+    await updateJobPostTimeline(jobId, newTimelinePoint);
+
+    if (jobPostError) {
+      console.error("Error updating job post timeline:", jobPostError);
+      toast.error("Failed to update job post timeline.");
+      return;
+    }
+    setTimelinePoints((prev) => [...prev, newTimelinePoint]);
+    toast.success("Status updated successfully.");
   };
 
   const getTimelinePointIcon = (type) => {
@@ -140,7 +172,7 @@ export function ApplicationTimeline() {
                 </div>
               </div>
 
-              <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-slate-200">
+              <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-accent border-2 border-slate-200">
                 {getTimelinePointIcon(point.type)}
               </div>
 
@@ -153,8 +185,13 @@ export function ApplicationTimeline() {
       {/* Action buttons */}
       <div className="mt-6 space-y-3 w-full">
         {!isApplied ? (
-          <Button onClick={handleApply} className="w-full" variant="default">
-            Apply Now
+          <Button
+            onClick={handleApply}
+            className="w-full max-w-[200px]"
+            variant="default"
+            disabled={jobPostLoading}
+          >
+            {jobPostLoading ? "Applying..." : "Apply"}
           </Button>
         ) : !isFinalized ? (
           <>
@@ -180,10 +217,10 @@ export function ApplicationTimeline() {
                 <div className="p-3 border-t border-border">
                   <Button
                     onClick={handleAddInterview}
-                    disabled={!interviewDate}
+                    disabled={!interviewDate || jobPostLoading}
                     className="w-full"
                   >
-                    Confirm Interview
+                    {jobPostLoading ? "Adding..." : "Confirm Interview"}
                   </Button>
                 </div>
               </PopoverContent>
@@ -196,7 +233,7 @@ export function ApplicationTimeline() {
                 className="flex-1 border-green-200 hover:bg-green-50 hover:text-green-700"
               >
                 <CheckCircle2Icon className="mr-2 h-4 w-4" />
-                Selected
+                {jobPostLoading ? "Finalizing..." : "Selected"}
               </Button>
               <Button
                 onClick={() => handleSetStatus("rejected")}
@@ -204,7 +241,7 @@ export function ApplicationTimeline() {
                 className="flex-1 border-red-200 hover:bg-red-50 hover:text-red-700"
               >
                 <XCircleIcon className="mr-2 h-4 w-4" />
-                Rejected
+                {jobPostLoading ? "Finalizing..." : "Rejected"}
               </Button>
             </div>
           </>

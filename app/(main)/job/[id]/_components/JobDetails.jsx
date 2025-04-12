@@ -16,49 +16,72 @@ import {
   BanknoteIcon,
 } from "lucide-react";
 import { ApplicationTimeline } from "./JobTimeline";
+import Link from "next/link";
+import JobBookmark from "./JobBookmark";
 
-export default function JobDetails({ jobPosting }) {
+export default function JobDetails({ jobPost }) {
+  const {
+    jobTitle,
+    jobDescription,
+    companyName,
+    location,
+    salary,
+    jobType,
+    industry,
+    level,
+    jobRequirements,
+    responsibilities,
+    applicationLink,
+    timeline,
+    isBookmark,
+    id: jobId,
+  } = jobPost;
+
   return (
-    <Card className="shadow-lg mx-4 pt-0">
-      <CardHeader className="bg-accent rounded-t-lg p-6">
+    <Card className="shadow-lg mx-4 pt-0 mt-30">
+      <CardHeader className="bg-accent-foreground/20 rounded-t-lg p-6">
         <div className="space-y-4">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">
-                {jobPosting.jobTitle}
-              </h1>
-              <div className="flex items-center mt-2 text-accent-foreground">
-                <BuildingIcon className="h-4 w-4 mr-1" />
-                <span className="mr-4">{jobPosting.companyName}</span>
-                <MapPinIcon className="h-4 w-4 mr-1" />
-                <span>{jobPosting.location}</span>
+              <h1 className="text-2xl font-bold tracking-tight">{jobTitle}</h1>
+              <div className="flex items-center mt-2 text-accent-foreground text-xl">
+                <BuildingIcon className="h-6 w-6 mr-1" />
+                <span className="mr-4 font-bold">{companyName}</span>
+                <MapPinIcon className="h-6 w-6 mr-1" />
+                <span>{location}</span>
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">
-              <Badge
-                variant="outline"
-                className="bg-slate-100 text-slate-800 font-medium"
-              >
-                {jobPosting.level} Level
+              <Badge variant="" className=" font-medium text-lg">
+                {level ? level : "N/A"} Level
               </Badge>
-              <Badge
-                variant="outline"
-                className="bg-slate-100 text-slate-800 font-medium"
-              >
-                {jobPosting.industry}
+              <Badge variant="" className=" font-medium text-lg">
+                {industry ? industry : "N/A"} Industry
               </Badge>
+              <JobBookmark jobId={jobId} isBookmark={isBookmark} />
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 mt-4">
-            <div className="flex items-center bg-slate-100 px-3 py-1.5 rounded-md">
-              <BriefcaseIcon className="h-4 w-4 mr-2 text-accent-foreground" />
-              <span className="text-sm font-medium">{jobPosting.jobType}</span>
+          <div className="flex flex-wrap gap-4 mt-4 items-center">
+            <div className="flex items-center  px-3 py-1.5 rounded-md bg-card">
+              <BriefcaseIcon className="h-6 w-6 mr-2 text-accent-foreground" />
+              <span className="text-lg font-medium text-accent-foreground">
+                {jobType && jobType.replace("_", " ")}
+              </span>
             </div>
-            <div className="flex items-center bg-slate-100 px-3 py-1.5 rounded-md">
-              <BanknoteIcon className="h-4 w-4 mr-2 text-accent-foreground" />
-              <span className="text-sm font-medium">{jobPosting.salary}</span>
+            <div className="flex items-center  px-3 py-1.5 rounded-md bg-card">
+              <BanknoteIcon className="h-6 w-6 mr-2 text-accent-foreground" />
+              <span className="text-lg font-medium text-accent-foreground">
+                {salary ? salary : "Salary N/A"}
+              </span>
             </div>
+            {applicationLink && applicationLink != "" && (
+              <Link href={applicationLink} target="_blank">
+                <Badge variant="" className=" font-medium text-lg">
+                  Go To Website
+                </Badge>
+              </Link>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -69,9 +92,7 @@ export default function JobDetails({ jobPosting }) {
           <div className="md:w-2/3 space-y-6">
             <div>
               <h2 className="text-lg font-semibold mb-3">Job Description</h2>
-              <p className="text-accent-foreground">
-                {jobPosting.jobDescription}
-              </p>
+              <p className="text-accent-foreground">{jobDescription}</p>
             </div>
 
             <Separator />
@@ -79,7 +100,7 @@ export default function JobDetails({ jobPosting }) {
             <div>
               <h2 className="text-lg font-semibold mb-3">Responsibilities</h2>
               <ul className="list-disc pl-5 space-y-1 text-accent-foreground">
-                {jobPosting.responsibilities.map((responsibility, index) => (
+                {responsibilities.map((responsibility, index) => (
                   <li key={index}>{responsibility}</li>
                 ))}
               </ul>
@@ -90,7 +111,7 @@ export default function JobDetails({ jobPosting }) {
             <div>
               <h2 className="text-lg font-semibold mb-3">Requirements</h2>
               <ul className="list-disc pl-5 space-y-1 text-accent-foreground">
-                {jobPosting.jobRequirements.map((requirement, index) => (
+                {jobRequirements.map((requirement, index) => (
                   <li key={index}>{requirement}</li>
                 ))}
               </ul>
@@ -98,9 +119,9 @@ export default function JobDetails({ jobPosting }) {
           </div>
 
           {/* Timeline Component */}
-          <div className="md:w-1/3 border-l pl-6">
+          <div className="md:w-1/3 border-l pl-6 flex flex-col justify-start items-center">
             <h2 className="text-lg font-semibold mb-4">Application Status</h2>
-            <ApplicationTimeline />
+            <ApplicationTimeline timeline={timeline} jobId={jobId} />
           </div>
         </div>
       </CardContent>

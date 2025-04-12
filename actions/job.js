@@ -6,6 +6,7 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getUser } from "./user";
+import { revalidatePath } from "next/cache";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -94,4 +95,86 @@ export async function getJobPosts() {
   });
 
   return jobPosts;
+}
+
+export async function getJobPostById(id) {
+  const user = await getUser();
+  // console.log(id);
+  // console.log(user.id);
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+
+  const jobPost = await db.job.findUnique({
+    where: {
+      id: id,
+      userId: user.id,
+    },
+  });
+
+  return jobPost;
+}
+
+export async function addTimelinePoint(jobId, newTimelinePoint) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
+  if (!newTimelinePoint) {
+    throw new Error("Timeline point data is required");
+  }
+
+  //add timelinepoint to the timeline array of the job post
+
+  const updatedJobPost = await db.job.update({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+    data: {
+      status: newTimelinePoint.type,
+      timeline: {
+        push: newTimelinePoint,
+      },
+    },
+  });
+
+  return newTimelinePoint;
+}
+
+export async function updateJobBookmark(jobId, isBookmark) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
+
+  const updatedJobPost = await db.job.update({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+    data: {
+      isBookmark: isBookmark,
+    },
+  });
+
+  revalidatePath(`/job/${jobId}`);
+
+  return updatedJobPost;
 }
