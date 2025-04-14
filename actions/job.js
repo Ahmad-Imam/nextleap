@@ -83,14 +83,21 @@ export async function addJobPost(jobPost) {
 }
 
 export async function getJobPosts() {
-  const { userId } = auth();
-  if (!userId) {
+  const user = await getUser();
+  if (!user) {
     throw new Error("User not authenticated");
   }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
 
-  const jobPosts = await db.jobPosts.findMany({
+  //sort by createdAt in descending order
+  const jobPosts = await db.job.findMany({
     where: {
-      userId: userId,
+      userId: user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -148,6 +155,8 @@ export async function addTimelinePoint(jobId, newTimelinePoint) {
       },
     },
   });
+  revalidatePath(`/job/${jobId}`);
+  revalidatePath("/dashboard");
 
   return newTimelinePoint;
 }
@@ -171,10 +180,57 @@ export async function updateJobBookmark(jobId, isBookmark) {
     },
     data: {
       isBookmark: isBookmark,
+      updatedAt: new Date(),
     },
   });
 
   revalidatePath(`/job/${jobId}`);
 
   return updatedJobPost;
+}
+
+export async function getJobPostByBookmark() {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+
+  const jobPosts = await db.job.findMany({
+    where: {
+      userId: user.id,
+      isBookmark: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return jobPosts;
+}
+
+export async function getJobPostsByApplication() {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+
+  const jobPosts = await db.job.findMany({
+    where: {
+      userId: user.id,
+      status: {
+        in: ["applied", "interview"],
+      },
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
+  return jobPosts;
 }
