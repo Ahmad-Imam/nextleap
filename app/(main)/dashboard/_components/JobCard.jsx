@@ -30,7 +30,7 @@ export function JobCard({
   const formattedDate = formatDate(createdAt);
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden flex flex-col justify-between">
       <CardContent className="p-0">
         <div className="p-6">
           <div className="flex justify-between items-start">
@@ -61,10 +61,12 @@ export function JobCard({
               <MapPinIcon className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
               <span>{location}</span>
             </div>
-            <div className="flex items-center text-sm">
-              <BanknoteIcon className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
-              <span>{salary}</span>
-            </div>
+            {salary != "" && (
+              <div className="flex items-center text-sm">
+                <BanknoteIcon className="h-3.5 w-3.5 mr-1 text-muted-foreground" />
+                <span>{salary}</span>
+              </div>
+            )}
             {applicants !== undefined && (
               <div className="flex items-center text-sm">
                 <UsersIcon className="h-3.5 w-3.5 mr-1 text-muted-foreground" />

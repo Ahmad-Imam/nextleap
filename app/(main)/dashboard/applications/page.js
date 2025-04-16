@@ -1,8 +1,8 @@
 import React from "react";
 import { JobCard } from "../_components/JobCard";
-import JobList from "./_components/JobList";
+import JobList from "../jobs/_components/JobList";
 
-export default function JobsPage() {
+export default function ApplicationsPage() {
   //create sample job data based on this         jobTitle="Software Engineer"
 
   const jobPosts = [

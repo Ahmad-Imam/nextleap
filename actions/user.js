@@ -75,3 +75,29 @@ export async function getUser() {
 
   return user;
 }
+
+export async function updateUser(formData) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+  if (!formData) {
+    throw new Error("No form data found");
+  }
+
+  try {
+    const updatedUser = await db.user.update({
+      where: { id: user.id },
+      data: {
+        ...formData,
+      },
+    });
+    return { success: true, user: updatedUser };
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to update user");
+  }
+}

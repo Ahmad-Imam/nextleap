@@ -1,6 +1,5 @@
 import React from "react";
-import { JobCard } from "../_components/JobCard";
-import JobList from "./_components/JobList";
+import JobList from "../jobs/_components/JobList";
 
 export default function JobsPage() {
   //create sample job data based on this         jobTitle="Software Engineer"
@@ -191,7 +190,7 @@ export default function JobsPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Tracked Jobs</h1>
+      <h1 className="text-2xl font-bold mb-4">All Bookmarked Jobs</h1>
       <JobList jobPosts={jobPosts} />
     </div>
   );

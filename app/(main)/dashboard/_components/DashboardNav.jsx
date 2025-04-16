@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   BriefcaseIcon,
@@ -10,8 +11,9 @@ import {
   MessageSquareIcon,
   SettingsIcon,
   HelpCircleIcon,
+  FileUserIcon,
+  UserIcon,
 } from "lucide-react";
-
 import {
   SidebarMenu,
   SidebarMenuItem,
@@ -23,11 +25,13 @@ import {
 } from "@/components/ui/sidebar";
 
 export function DashboardNav() {
+  const pathname = usePathname();
+
   return (
-    <div className="py-4">
+    <div className="py-4 pl-4">
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild isActive>
+          <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
             <Link href="/dashboard">
               <LayoutDashboard className="h-4 w-4" />
               <span>Dashboard</span>
@@ -35,7 +39,10 @@ export function DashboardNav() {
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith("/dashboard/jobs")}
+          >
             <Link href="/dashboard/jobs">
               <BriefcaseIcon className="h-4 w-4" />
               <span>My Jobs</span>
@@ -43,7 +50,10 @@ export function DashboardNav() {
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith("/dashboard/bookmarks")}
+          >
             <Link href="/dashboard/bookmarks">
               <BookmarkIcon className="h-4 w-4" />
               <span>Bookmarks</span>
@@ -51,7 +61,10 @@ export function DashboardNav() {
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith("/dashboard/applications")}
+          >
             <Link href="/dashboard/applications">
               <FileTextIcon className="h-4 w-4" />
               <span>Applications</span>
@@ -59,15 +72,21 @@ export function DashboardNav() {
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
-            <Link href="/dashboard/interviews">
-              <CalendarIcon className="h-4 w-4" />
-              <span>Interviews</span>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith("/dashboard/resume")}
+          >
+            <Link href="/dashboard/resume">
+              <FileUserIcon className="h-4 w-4" />
+              <span>Resume</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.startsWith("/dashboard/messages")}
+          >
             <Link href="/dashboard/messages">
               <MessageSquareIcon className="h-4 w-4" />
               <span>Messages</span>
@@ -79,19 +98,28 @@ export function DashboardNav() {
       <SidebarSeparator className="my-4" />
 
       <SidebarGroup>
-        <SidebarGroupLabel>Support</SidebarGroupLabel>
+        <SidebarGroupLabel>
+          <SettingsIcon className="h-4 w-4" />
+          <span className="pl-2">Settings</span>
+        </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/dashboard/settings">
-                  <SettingsIcon className="h-4 w-4" />
-                  <span>Settings</span>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith("/dashboard/profile")}
+              >
+                <Link href="/dashboard/profile">
+                  <UserIcon className="h-4 w-4" />
+                  <span>Profile</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith("/dashboard/help")}
+              >
                 <Link href="/dashboard/help">
                   <HelpCircleIcon className="h-4 w-4" />
                   <span>Help & Support</span>

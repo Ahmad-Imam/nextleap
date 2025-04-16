@@ -10,9 +10,9 @@ export default async function OnboardingPage() {
   const { isOnboarded } = await getUserOnboardingStatus();
   console.log(isOnboarded);
 
-  //   if (isOnboarded) {
-  //     redirect("/dashboard");
-  //   }
+  if (isOnboarded) {
+    redirect("/dashboard");
+  }
 
   return (
     <main className="flex items-center justify-center min-h-screen">

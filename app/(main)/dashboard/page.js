@@ -14,10 +14,10 @@ export default async function DashboardPage() {
   const bookmarkedJobPosts = await getJobPostByBookmark();
 
   const applicationJobPosts = await getJobPostsByApplication();
-  console.log(applicationJobPosts.length);
+  // console.log(applicationJobPosts.length);
 
   return (
-    <div className="w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-center justify-between">
+    <div className="w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">
       <DashboardHeader />
 
       <DashboardTab

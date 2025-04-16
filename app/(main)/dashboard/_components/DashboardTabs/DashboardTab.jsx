@@ -7,6 +7,7 @@ import {
   PlusCircleIcon,
   MailIcon,
   CheckCircleIcon,
+  Grid2X2Icon,
 } from "lucide-react";
 import {
   Card,
@@ -17,6 +18,7 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export default function DashboardTab({
   allJobPosts,
   bookmarkedJobPosts,
@@ -46,14 +48,16 @@ export default function DashboardTab({
             />
           ))}
 
-          <Card className="flex h-full items-center justify-center p-8 border-dashed">
+          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
             <div className="flex flex-col items-center text-center">
-              <PlusCircleIcon className="h-8 w-8 text-muted-foreground mb-2" />
+              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
               <h3 className="text-lg font-medium">View all Jobs</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 View all tracked jobs
               </p>
-              <Button>View All</Button>
+              <Link href="/dashboard/jobs" className="w-full">
+                <Button>View All</Button>
+              </Link>
             </div>
           </Card>
         </div>
@@ -74,9 +78,9 @@ export default function DashboardTab({
               id={jobPost.id}
             />
           ))}
-          <Card className="flex h-full items-center justify-center p-8 border-dashed">
+          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
             <div className="flex flex-col items-center text-center">
-              <PlusCircleIcon className="h-8 w-8 text-muted-foreground mb-2" />
+              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
               <h3 className="text-lg font-medium">View all Jobs</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 View all tracked jobs
@@ -102,9 +106,9 @@ export default function DashboardTab({
               id={jobPost.id}
             />
           ))}
-          <Card className="flex h-full items-center justify-center p-8 border-dashed">
+          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
             <div className="flex flex-col items-center text-center">
-              <PlusCircleIcon className="h-8 w-8 text-muted-foreground mb-2" />
+              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
               <h3 className="text-lg font-medium">View all Jobs</h3>
               <p className="text-sm text-muted-foreground mb-4">
                 View all tracked jobs

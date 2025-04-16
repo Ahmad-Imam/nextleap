@@ -18,6 +18,9 @@ model User {
   bio         String?
   socials     Json[]
   skills      Json[]
+  education   Json[]
+  experience  Json[]
+  proj        Json[]
   coverLetter CoverLetter[]
   jobs        Job[]
   resume      Resume?

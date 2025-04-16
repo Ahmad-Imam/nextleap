@@ -21,24 +21,24 @@ import JobBookmark from "./JobBookmark";
 
 export default function JobDetails({ jobPost }) {
   const {
-    jobTitle,
-    jobDescription,
-    companyName,
-    location,
-    salary,
-    jobType,
-    industry,
-    level,
-    jobRequirements,
-    responsibilities,
-    applicationLink,
-    timeline,
-    isBookmark,
-    id: jobId,
-  } = jobPost;
+    jobTitle = "",
+    jobDescription = "",
+    companyName = "",
+    location = "",
+    salary = "",
+    jobType = "",
+    industry = "",
+    level = "",
+    jobRequirements = [],
+    responsibilities = [],
+    applicationLink = "",
+    timeline = [],
+    isBookmark = false,
+    id: jobId = null,
+  } = jobPost || {};
 
   return (
-    <Card className="shadow-lg mx-4 pt-0 mt-30">
+    <Card className="shadow-lg mx-4 pt-0">
       <CardHeader className="bg-accent-foreground/20 rounded-t-lg p-6">
         <div className="space-y-4">
           <div className="flex items-start justify-between">
