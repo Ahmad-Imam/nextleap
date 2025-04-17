@@ -27,6 +27,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const TestTimeout = async () => {
   console.log("TestTimeout called");
   return new Promise((resolve) => {
@@ -37,12 +48,15 @@ const TestTimeout = async () => {
 };
 
 export default function ResumeForm({ loggedUser }) {
+  const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
+  console.log("form");
   const router = useRouter();
   const {
     loading: updateLoading,
     fn: updateUserFn,
     data: updateResult,
-  } = useFetch(updateUserOnboard);
+  } = useFetch();
+  ///imlement the updateUserFn function to update the user data resumecontent
 
   const {
     register,
@@ -59,6 +73,7 @@ export default function ResumeForm({ loggedUser }) {
       experience: loggedUser?.experience || [],
       proj: loggedUser?.proj || [],
       socials: loggedUser?.socials || [],
+      skills: loggedUser?.skills || [],
     },
   });
 
@@ -66,6 +81,7 @@ export default function ResumeForm({ loggedUser }) {
     fields: educationFields,
     append: appendEducation,
     remove: removeEducation,
+    move: moveEducation,
   } = useFieldArray({
     name: "education",
     control,
@@ -75,6 +91,7 @@ export default function ResumeForm({ loggedUser }) {
     fields: experienceFields,
     append: appendExperience,
     remove: removeExperience,
+    move: moveExperience,
   } = useFieldArray({
     name: "experience",
     control,
@@ -93,14 +110,30 @@ export default function ResumeForm({ loggedUser }) {
     fields: projectFields,
     append: appendProjects,
     remove: removeProjects,
+    move: moveProjects,
   } = useFieldArray({
     name: "proj",
     control,
   });
 
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+    move: moveSkill,
+  } = useFieldArray({
+    name: "skills",
+    control,
+  });
+
   const onSubmitForm = async (values) => {
     try {
-      console.log(values);
+      const newValues = {
+        name: loggedUser.name,
+        email: loggedUser.email,
+        ...values,
+      };
+      console.log(newValues);
     } catch (error) {
       console.error("Onboarding error:", error);
     }
@@ -141,6 +174,117 @@ export default function ResumeForm({ loggedUser }) {
                 <p className="text-sm text-red-500">{errors.bio.message}</p>
               )}
             </div>
+
+            {/* Skills */}
+            <div className="space-y-4 flex flex-col items-center ">
+              <Label className={"text-xl font-bold"}>Skills</Label>
+              <div className="w-full flex flex-col gap-6">
+                {skillFields.map((field, idx) => (
+                  <div
+                    key={field.id}
+                    className="flex flex-col gap-2 items-center justify-center w-full"
+                  >
+                    <div className="flex justify-between gap-4  w-full">
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`skills[${idx}].name`}>Skill</Label>
+                        <Input
+                          {...register(`skills.${idx}.name`, {
+                            required: "Skill name is required",
+                          })}
+                          id={`skills[${idx}].name`}
+                          placeholder="e.g. React"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`skills[${idx}].exp`}>
+                          Experience (years)
+                        </Label>
+                        <Input
+                          {...register(`skills.${idx}.exp`, {
+                            required: "Experience is required",
+                            valueAsNumber: true,
+                          })}
+                          id={`skills[${idx}].exp`}
+                          placeholder="e.g. 2"
+                          type="number"
+                          min={0}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`skills[${idx}].level`}>Level</Label>
+                        <Select
+                          value={watch(`skills.${idx}.level`) || ""}
+                          onValueChange={(value) =>
+                            setValue(`skills.${idx}.level`, value, {
+                              shouldValidate: true,
+                            })
+                          }
+                        >
+                          <SelectTrigger
+                            id={`skills[${idx}].level`}
+                            className="text-lg"
+                          >
+                            <SelectValue placeholder="Select level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Skill Level</SelectLabel>
+                              {skillLevels.map((lev) => (
+                                <SelectItem
+                                  key={lev}
+                                  value={lev}
+                                  className="text-lg"
+                                >
+                                  {lev}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-6 items-center justify-center">
+                      <Button
+                        className=" mr-2 text-2xl"
+                        variant="destructive"
+                        onClick={() => removeSkill(idx)}
+                      >
+                        -
+                      </Button>
+                      <Button
+                        type="button"
+                        disabled={idx === 0}
+                        onClick={() => moveSkill(idx, idx - 1)}
+                        variant=""
+                      >
+                        ↑
+                      </Button>
+                      <Button
+                        type="button"
+                        disabled={idx === skillFields.length - 1}
+                        onClick={() => moveSkill(idx, idx + 1)}
+                        variant=""
+                      >
+                        ↓
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Button
+                className="my-4 text-md cursor-pointer border rounded-lg p-4"
+                onClick={() =>
+                  appendSkill({
+                    name: "",
+                    exp: 0,
+                    level: skillLevels[0],
+                  })
+                }
+              >
+                Skill +
+              </Button>
+            </div>
+
             {/* education */}
             <div className="space-y-2 flex flex-col items-center justify-center py-2">
               <Label className={"text-xl font-bold"}>Education</Label>
@@ -333,13 +477,31 @@ export default function ResumeForm({ loggedUser }) {
                           />
                         </div>
                       </div>
-                      <Button
-                        className="mt-6 mr-2 text-2xl"
-                        variant="destructive"
-                        onClick={() => removeEducation(index)}
-                      >
-                        -
-                      </Button>
+                      <div className="flex gap-2 mt-6 items-center justify-center">
+                        <Button
+                          className=" mr-2 text-2xl"
+                          variant="destructive"
+                          onClick={() => removeEducation(index)}
+                        >
+                          -
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => moveEducation(index, index - 1)}
+                          variant=""
+                        >
+                          ↑
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === experienceFields.length - 1}
+                          onClick={() => moveEducation(index, index + 1)}
+                          variant=""
+                        >
+                          ↓
+                        </Button>
+                      </div>
                     </div>
                   );
                 })}
@@ -445,13 +607,31 @@ export default function ResumeForm({ loggedUser }) {
                                               /> */}
                         </div>
                       </div>
-                      <Button
-                        className="mt-6 mr-2 text-2xl"
-                        variant="destructive"
-                        onClick={() => removeProjects(index)}
-                      >
-                        -
-                      </Button>
+                      <div className="flex gap-2 mt-6 items-center justify-center">
+                        <Button
+                          className=" mr-2 text-2xl"
+                          variant="destructive"
+                          onClick={() => removeProjects(index)}
+                        >
+                          -
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => moveProjects(index, index - 1)}
+                          variant=""
+                        >
+                          ↑
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === experienceFields.length - 1}
+                          onClick={() => moveProjects(index, index + 1)}
+                          variant=""
+                        >
+                          ↓
+                        </Button>
+                      </div>
                     </div>
                   );
                 })}
@@ -664,13 +844,32 @@ export default function ResumeForm({ loggedUser }) {
                           />
                         </div>
                       </div>
-                      <Button
-                        className="mt-6 mr-2 text-2xl"
-                        variant="destructive"
-                        onClick={() => removeExperience(index)}
-                      >
-                        -
-                      </Button>
+
+                      <div className="flex gap-2 mt-6 items-center justify-center">
+                        <Button
+                          className=" mr-2 text-2xl"
+                          variant="destructive"
+                          onClick={() => removeExperience(index)}
+                        >
+                          -
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => moveExperience(index, index - 1)}
+                          variant=""
+                        >
+                          ↑
+                        </Button>
+                        <Button
+                          type="button"
+                          disabled={index === experienceFields.length - 1}
+                          onClick={() => moveExperience(index, index + 1)}
+                          variant=""
+                        >
+                          ↓
+                        </Button>
+                      </div>
                     </div>
                   );
                 })}

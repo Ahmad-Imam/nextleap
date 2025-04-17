@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  clerkUserId String        @unique
-  email       String        @unique
-  name        String?
-  imageUrl    String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  bio         String?
-  socials     Json[]
-  skills      Json[]
-  education   Json[]
-  experience  Json[]
-  proj        Json[]
-  coverLetter CoverLetter[]
-  jobs        Job[]
-  resume      Resume?
+  id            String        @id @default(uuid())
+  clerkUserId   String        @unique
+  email         String        @unique
+  name          String?
+  imageUrl      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  bio           String?
+  socials       Json[]
+  skills        Json[]
+  education     Json[]
+  experience    Json[]
+  proj          Json[]
+  coverLetter   CoverLetter[]
+  jobs          Job[]
+  resume        Resume?
+  resumeContent Json?
 }
 
 model Resume {

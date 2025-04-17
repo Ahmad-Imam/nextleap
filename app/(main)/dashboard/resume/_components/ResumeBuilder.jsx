@@ -4,11 +4,11 @@ import { buildResumeMarkdown } from "@/lib/markdownConverter";
 import MDEditor from "@uiw/react-md-editor";
 import React, { useState } from "react";
 
-export default function ResumeBuilder({ loggedUser }) {
+export default function ResumeBuilder({ loggedUser, items }) {
   // console.log(loggedUser);
 
   const [previewContent, setPreviewContent] = useState(
-    buildResumeMarkdown(loggedUser)
+    buildResumeMarkdown(loggedUser, items)
   );
 
   const [resumeMode, setResumeMode] = useState("preview");

@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResumeForm from "./_components/ResumeForm";
 import ResumeBuilder from "./_components/ResumeBuilder";
 import { getUser } from "@/actions/user";
+import ResumeOrder from "./_components/ResumeOrder";
+import ResumeTabClient from "./_components/ResumeTabClient";
 
 export default async function ResumePage() {
   const loggedUser = await getUser();
@@ -54,64 +56,7 @@ export default async function ResumePage() {
           <TabsTrigger value="preview">Markdown</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="edit">
-          <ResumeForm loggedUser={loggedUser} />
-        </TabsContent>
-
-        <TabsContent value="preview">
-          {/* {activeTab === "preview" && (
-            <Button
-              variant="link"
-              type="button"
-              className="mb-2"
-              onClick={() =>
-                setResumeMode(resumeMode === "preview" ? "edit" : "preview")
-              }
-            >
-              {resumeMode === "preview" ? (
-                <>
-                  <Edit className="h-4 w-4" />
-                  Edit Resume
-                </>
-              ) : (
-                <>
-                  <Monitor className="h-4 w-4" />
-                  Show Preview
-                </>
-              )}
-            </Button>
-          )}
-
-          {activeTab === "preview" && resumeMode !== "preview" && (
-            <div className="flex p-3 gap-2 items-center border-2 border-yellow-600 text-yellow-600 rounded mb-2">
-              <AlertTriangle className="h-5 w-5" />
-              <span className="text-sm">
-                You will lose editied markdown if you update the form data.
-              </span>
-            </div>
-          )}
-          <div className="border rounded-lg">
-            <MDEditor
-              value={previewContent}
-              onChange={setPreviewContent}
-              height={800}
-              preview={resumeMode}
-            />
-          </div>
-          <div className="hidden">
-            <div id="resume-pdf">
-              <MDEditor.Markdown
-                source={previewContent}
-                style={{
-                  background: "white",
-                  color: "black",
-                }}
-              />
-            </div>
-          </div> */}
-
-          <ResumeBuilder loggedUser={loggedUser} />
-        </TabsContent>
+        <ResumeTabClient loggedUser={loggedUser} />
       </Tabs>
     </div>
   );
