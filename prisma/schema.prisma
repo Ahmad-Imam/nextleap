@@ -23,13 +23,14 @@ model User {
   proj          Json[]
   coverLetter   CoverLetter[]
   jobs          Job[]
-  resume        Resume?
+  resume        Resume[]
   resumeContent Json?
 }
 
 model Resume {
   id        String   @id @default(cuid())
-  userId    String   @unique
+  userId    String
+  name      String
   content   String
   atsScore  Float?
   feedback  String?

@@ -77,7 +77,7 @@ export async function addJobPost(jobPost) {
     },
   });
 
-  // console.log(newJobPost);
+  console.log(newJobPost);
 
   return newJobPost;
 }
@@ -233,4 +233,46 @@ export async function getJobPostsByApplication() {
   });
 
   return jobPosts;
+}
+
+export async function getUpcomingInterviewsForUser() {
+  const user = await getUser();
+  if (!user) throw new Error("User not authenticated");
+
+  // 1. Fetch all jobs for the user, including their timeline
+  const jobs = await db.job.findMany({
+    where: { userId: user.id },
+    select: {
+      id: true,
+      jobTitle: true,
+      companyName: true,
+      timeline: true,
+    },
+  });
+
+  const now = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(now.getDate() + 15);
+
+  const upcomingInterviews = [];
+
+  for (const job of jobs) {
+    if (!Array.isArray(job.timeline)) continue;
+    const interviews = job.timeline.filter(
+      (item) =>
+        item.type === "interview" &&
+        new Date(item.date) > now &&
+        new Date(item.date) <= nextWeek
+    );
+    // console.log("interviews");
+    // console.log(interviews);
+    interviews.forEach((interview) => {
+      upcomingInterviews.push({
+        ...interview,
+        ...job,
+      });
+    });
+  }
+  upcomingInterviews.sort((a, b) => new Date(a.date) - new Date(b.date));
+  return upcomingInterviews;
 }

@@ -13,6 +13,7 @@ import {
   HelpCircleIcon,
   FileUserIcon,
   UserIcon,
+  FilePlusIcon,
 } from "lucide-react";
 import {
   SidebarMenu,
@@ -28,7 +29,7 @@ export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <div className="py-4 pl-4">
+    <div className="py-4 px-2">
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
@@ -85,6 +86,18 @@ export function DashboardNav() {
         <SidebarMenuItem>
           <SidebarMenuButton
             asChild
+            isActive={pathname.startsWith("/dashboard/resume-builder")}
+          >
+            <Link href="/dashboard/resume-builder">
+              <FilePlusIcon className="h-4 w-4" />
+              <span>Resume Builder</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            asChild
             isActive={pathname.startsWith("/dashboard/messages")}
           >
             <Link href="/dashboard/messages">
@@ -97,7 +110,7 @@ export function DashboardNav() {
 
       <SidebarSeparator className="my-4" />
 
-      <SidebarGroup>
+      <SidebarGroup className={"p-0"}>
         <SidebarGroupLabel>
           <SettingsIcon className="h-4 w-4" />
           <span className="pl-2">Settings</span>

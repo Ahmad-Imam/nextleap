@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -19,11 +19,16 @@ import {
 import useFetch from "@/hooks/useFetch";
 import { addTimelinePoint } from "@/actions/job";
 import { toast } from "sonner";
+import { DateTimePicker } from "@/components/date-time-picker";
+import { DatePicker } from "@/components/DatePicker";
+import { useRouter } from "next/navigation";
 
 export function ApplicationTimeline({ timeline, jobId }) {
   const [timelinePoints, setTimelinePoints] = useState(timeline ?? []);
   const [interviewDate, setInterviewDate] = useState(undefined);
   const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const [status, setStatus] = useState("");
 
   const isApplied = timelinePoints.some((point) => point.type === "applied");
   const isFinalized = timelinePoints.some(
@@ -32,6 +37,8 @@ export function ApplicationTimeline({ timeline, jobId }) {
   const interviewCount = timelinePoints.filter(
     (point) => point.type === "interview"
   ).length;
+
+  const router = useRouter();
 
   const {
     data: jobPost,
@@ -51,14 +58,12 @@ export function ApplicationTimeline({ timeline, jobId }) {
     };
 
     await updateJobPostTimeline(jobId, newTimelinePoint);
+    setStatus("applied");
     if (jobPostError) {
       console.error("Error updating job post timeline:", jobPostError);
       toast.error("Failed to update job post timeline.");
       return;
     }
-    toast.success("Status updated successfully.");
-
-    setTimelinePoints([...timelinePoints, newTimelinePoint]);
   };
 
   const handleAddInterview = async () => {
@@ -72,16 +77,12 @@ export function ApplicationTimeline({ timeline, jobId }) {
     };
 
     await updateJobPostTimeline(jobId, newTimelinePoint);
-
+    setStatus("interview");
     if (jobPostError) {
       console.error("Error updating job post timeline:", jobPostError);
       toast.error("Failed to update job post timeline.");
       return;
     }
-    setTimelinePoints((prev) => [...prev, newTimelinePoint]);
-    setInterviewDate(undefined);
-    setCalendarOpen(false);
-    toast.success("Status updated successfully.");
   };
 
   const handleSetStatus = async (status) => {
@@ -93,7 +94,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
       date: new Date(),
       position: timelinePoints.length % 2 === 0 ? "left" : "right",
     };
-
+    setStatus(status);
     await updateJobPostTimeline(jobId, newTimelinePoint);
 
     if (jobPostError) {
@@ -101,8 +102,6 @@ export function ApplicationTimeline({ timeline, jobId }) {
       toast.error("Failed to update job post timeline.");
       return;
     }
-    setTimelinePoints((prev) => [...prev, newTimelinePoint]);
-    toast.success("Status updated successfully.");
   };
 
   const getTimelinePointIcon = (type) => {
@@ -131,6 +130,54 @@ export function ApplicationTimeline({ timeline, jobId }) {
         return "Rejected";
     }
   };
+
+  useEffect(() => {
+    if (jobPost && !jobPostLoading) {
+      const newTimelinePoint =
+        status === "interview"
+          ? {
+              id: `interview-${interviewCount + 1}`,
+              type: "interview",
+              date: interviewDate,
+              position: timelinePoints.length % 2 === 0 ? "left" : "right",
+            }
+          : status === "selected" || status === "rejected"
+          ? {
+              id: status,
+              type: status,
+              date: new Date(),
+              position: timelinePoints.length % 2 === 0 ? "left" : "right",
+            }
+          : {
+              id: "applied",
+              type: "applied",
+              date: new Date(),
+              position: "left",
+            };
+
+      // : !isFinalized
+      // ? {
+      //     id: "applied",
+      //     type: "applied",
+      //     date: new Date(),
+      //     position: "left",
+      //   }
+      // : {
+      //     id: status,
+      //     type: status,
+      //     date: new Date(),
+      //     position: timelinePoints.length % 2 === 0 ? "left" : "right",
+      //   };
+
+      // router.push("/");
+      setTimelinePoints((prev) => [...prev, newTimelinePoint]);
+      setInterviewDate(undefined);
+      setCalendarOpen(false);
+      toast.success("Job updated successfully!");
+      router.refresh();
+    }
+  }, [jobPost, jobPostLoading]);
+  console.log("timelinePoints", timelinePoints);
 
   return (
     <div className="flex flex-col">
@@ -168,7 +215,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
                     point.position === "left" ? "text-left" : "text-right"
                   )}
                 >
-                  {format(point.date, "MMM d, yyyy")}
+                  {format(point?.date, "MMM d, yyyy")}
                 </div>
               </div>
 
@@ -208,12 +255,15 @@ export function ApplicationTimeline({ timeline, jobId }) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
+                {/* <Calendar
                   mode="single"
                   selected={interviewDate}
                   onSelect={setInterviewDate}
                   initialFocus
-                />
+                /> */}
+
+                {/* <DateTimePicker value={startDate} onChange={setStartDate} /> */}
+                <DatePicker date={interviewDate} setDate={setInterviewDate} />
                 <div className="p-3 border-t border-border">
                   <Button
                     onClick={handleAddInterview}

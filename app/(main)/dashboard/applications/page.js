@@ -191,7 +191,7 @@ export default function ApplicationsPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Tracked Jobs</h1>
+      <h1 className="text-2xl font-bold mb-4">All applied Jobs</h1>
       <JobList jobPosts={jobPosts} />
     </div>
   );

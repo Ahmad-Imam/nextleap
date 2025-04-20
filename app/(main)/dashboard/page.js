@@ -5,6 +5,7 @@ import {
   getJobPostByBookmark,
   getJobPosts,
   getJobPostsByApplication,
+  getUpcomingInterviewsForUser,
 } from "@/actions/job";
 
 export default async function DashboardPage() {
@@ -16,6 +17,9 @@ export default async function DashboardPage() {
   const applicationJobPosts = await getJobPostsByApplication();
   // console.log(applicationJobPosts.length);
 
+  const upcomingInterviews = await getUpcomingInterviewsForUser();
+  // console.log(upcomingInterviews);
+
   return (
     <div className="w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">
       <DashboardHeader />
@@ -26,7 +30,7 @@ export default async function DashboardPage() {
         applicationJobPosts={applicationJobPosts}
       />
 
-      <UpcomingInterviews />
+      <UpcomingInterviews upcomingInterviews={upcomingInterviews} />
     </div>
   );
 }

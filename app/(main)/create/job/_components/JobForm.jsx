@@ -90,10 +90,6 @@ export default function JobForm() {
     const { generateCoverLetter, ...updatedData } = data;
 
     await updateSubmitFn(updatedData);
-    console.log("New Job Post:", updateSubmitResult);
-    //route to the job page
-    toast.success("Job post created successfully!");
-    router.push("/job/" + updateSubmitResult.id);
   };
 
   useEffect(() => {
@@ -124,6 +120,15 @@ export default function JobForm() {
       }
     }
   }, [updateUrlResult]);
+
+  useEffect(() => {
+    if (updateSubmitResult && !updateLoadingSubmit) {
+      // console.log("New Job Post:", updateSubmitResult);
+      //route to the job page
+      toast.success("Job post created successfully!");
+      router.push("/job/" + updateSubmitResult?.id);
+    }
+  }, [updateSubmitResult, updateLoadingSubmit]);
 
   return (
     <div className="flex items-center justify-center bg-background w-2xl py-20">

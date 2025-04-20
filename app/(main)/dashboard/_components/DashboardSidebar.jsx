@@ -16,7 +16,7 @@ export function DashboardSidebar({ children }) {
     <SidebarProvider>
       <div className="flex w-full ">
         <Sidebar
-          className="flex-1 fixed left-0 top-0 z-20 h-screen pt-20"
+          className="flex-1 fixed left-0 top-0 z-20 h-screen pt-20 "
           collapsible="icon"
         >
           {/* <SidebarHeader className="flex h-14 ">

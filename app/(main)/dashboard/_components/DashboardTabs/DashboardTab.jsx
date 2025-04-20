@@ -48,18 +48,33 @@ export default function DashboardTab({
             />
           ))}
 
-          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
-            <div className="flex flex-col items-center text-center">
-              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
-              <h3 className="text-lg font-medium">View all Jobs</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                View all tracked jobs
-              </p>
-              <Link href="/dashboard/jobs" className="w-full">
-                <Button>View All</Button>
-              </Link>
-            </div>
-          </Card>
+          {allJobPosts.length === 0 ? (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">No Jobs Found</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  No jobs found. Create a new job to get started.
+                </p>
+                <Link href="/create/job" className="w-full">
+                  <Button>Create Job</Button>
+                </Link>
+              </div>
+            </Card>
+          ) : (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">View all Jobs</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  View all tracked jobs
+                </p>
+                <Link href="/dashboard/jobs" className="w-full">
+                  <Button>View All</Button>
+                </Link>
+              </div>
+            </Card>
+          )}
         </div>
       </TabsContent>
 
@@ -78,16 +93,34 @@ export default function DashboardTab({
               id={jobPost.id}
             />
           ))}
-          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
-            <div className="flex flex-col items-center text-center">
-              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
-              <h3 className="text-lg font-medium">View all Jobs</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                View all tracked jobs
-              </p>
-              <Button>View All</Button>
-            </div>
-          </Card>
+
+          {bookmarkedJobPosts.length === 0 ? (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">No Jobs Found</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  No jobs bookmarked. Bookmark a job to get started.
+                </p>
+                {/* <Link href="/create/job" className="w-full">
+                  <Button>Create Job</Button>
+                </Link> */}
+              </div>
+            </Card>
+          ) : (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">View all Jobs</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  View all tracked jobs
+                </p>
+                <Link href="/dashboard/bookmarks" className="w-full">
+                  <Button>View All</Button>
+                </Link>
+              </div>
+            </Card>
+          )}
         </div>
       </TabsContent>
 
@@ -106,16 +139,34 @@ export default function DashboardTab({
               id={jobPost.id}
             />
           ))}
-          <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
-            <div className="flex flex-col items-center text-center">
-              <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
-              <h3 className="text-lg font-medium">View all Jobs</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                View all tracked jobs
-              </p>
-              <Button>View All</Button>
-            </div>
-          </Card>
+
+          {applicationJobPosts.length === 0 ? (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">No Jobs Found</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  No jobs applied. Apply for a job to get started.
+                </p>
+                {/* <Link href="/create/job" className="w-full">
+                  <Button>Create Job</Button>
+                </Link> */}
+              </div>
+            </Card>
+          ) : (
+            <Card className="flex h-full items-center justify-center p-8 border-dashed shadow-none">
+              <div className="flex flex-col items-center text-center">
+                <Grid2X2Icon className="h-8 w-8 text-muted-foreground mb-2" />
+                <h3 className="text-lg font-medium">View all Jobs</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  View all tracked jobs
+                </p>
+                <Link href="/dashboard/applications" className="w-full">
+                  <Button>View All</Button>
+                </Link>
+              </div>
+            </Card>
+          )}
         </div>
       </TabsContent>
     </Tabs>

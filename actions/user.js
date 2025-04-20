@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export async function updateUserOnboard(data) {
   const { userId } = await auth();
@@ -99,5 +100,57 @@ export async function updateUser(formData) {
   } catch (error) {
     console.log(error.message);
     throw new Error("Failed to update user");
+  }
+}
+
+export async function updateUserResumeContent(resumeContent) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+  if (!resumeContent) {
+    throw new Error("No resume content found");
+  }
+
+  try {
+    const updatedUser = await db.user.update({
+      where: { id: user.id },
+      data: {
+        resumeContent,
+      },
+    });
+    revalidatePath("/dashboard/resume");
+    return { success: true, user: updatedUser };
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to update user resume content");
+  }
+}
+
+export async function getUserResumes() {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+
+  try {
+    const userResumeContent = await db.user.findUnique({
+      where: { id: user.id },
+      include: {
+        resume: {
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    });
+    return userResumeContent;
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Failed to get user resume content");
   }
 }

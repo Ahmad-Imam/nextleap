@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { updateUserOnboard } from "@/actions/user";
+import { updateUserOnboard, updateUserResumeContent } from "@/actions/user";
 import useFetch from "@/hooks/useFetch";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -47,15 +47,20 @@ const TestTimeout = async () => {
   });
 };
 
-export default function ResumeForm({ loggedUser }) {
-  const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
+export default function ResumeForm({ loggedUser, handleModeChange }) {
   console.log("form");
+  const [modeChanged, setModeChanged] = useState(false);
+  const [newValues, setNewValues] = useState({});
+
+  // console.log(loggedUser);
+  const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
   const router = useRouter();
   const {
     loading: updateLoading,
     fn: updateUserFn,
     data: updateResult,
-  } = useFetch();
+    error: updateError,
+  } = useFetch(updateUserResumeContent);
   ///imlement the updateUserFn function to update the user data resumecontent
 
   const {
@@ -134,18 +139,25 @@ export default function ResumeForm({ loggedUser }) {
         ...values,
       };
       console.log(newValues);
+      await updateUserFn(newValues);
+      setNewValues(newValues);
+      if (updateError) {
+        toast.error("Error updating resume: " + updateError.message);
+        return;
+      }
     } catch (error) {
-      console.error("Onboarding error:", error);
+      console.error("Resume settings error:", error);
     }
   };
 
   useEffect(() => {
-    if (updateResult?.success && !updateLoading) {
-      toast.success("Profile updated successfully!");
-      router.push("/");
+    if (updateResult?.success && !updateLoading && !modeChanged) {
+      toast.success("Resume settings updated successfully!");
+      handleModeChange(newValues); // Only call once
+      setModeChanged(true);
       router.refresh();
     }
-  }, [updateResult, updateLoading]);
+  }, [updateResult, updateLoading, modeChanged]);
 
   return (
     <div className="flex items-center justify-center bg-background w-full">
@@ -943,7 +955,7 @@ export default function ResumeForm({ loggedUser }) {
                   Saving...
                 </>
               ) : (
-                "Complete Profile"
+                "Save Changes"
               )}
             </Button>
           </form>
