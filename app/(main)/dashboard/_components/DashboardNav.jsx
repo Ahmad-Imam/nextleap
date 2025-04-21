@@ -1,35 +1,34 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  BriefcaseIcon,
-  BookmarkIcon,
-  FileTextIcon,
-  CalendarIcon,
-  MessageSquareIcon,
-  SettingsIcon,
-  HelpCircleIcon,
-  FileUserIcon,
-  UserIcon,
-  FilePlusIcon,
-} from "lucide-react";
-import {
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
+import {
+  BookmarkIcon,
+  BriefcaseIcon,
+  FilePlusIcon,
+  FileTextIcon,
+  FileUserIcon,
+  HelpCircleIcon,
+  LayoutDashboard,
+  MessageSquareIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <div className="py-4 px-2">
+    <div className="py-4 px-2 ">
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
@@ -75,7 +74,7 @@ export function DashboardNav() {
         <SidebarMenuItem>
           <SidebarMenuButton
             asChild
-            isActive={pathname.startsWith("/dashboard/resume")}
+            isActive={pathname === "/dashboard/resume"}
           >
             <Link href="/dashboard/resume">
               <FileUserIcon className="h-4 w-4" />
@@ -133,7 +132,7 @@ export function DashboardNav() {
                 asChild
                 isActive={pathname.startsWith("/dashboard/help")}
               >
-                <Link href="/dashboard/help">
+                <Link href="/faq">
                   <HelpCircleIcon className="h-4 w-4" />
                   <span>Help & Support</span>
                 </Link>

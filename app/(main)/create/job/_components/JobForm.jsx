@@ -1,11 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
+import { addJobPost, generateJobPost } from "@/actions/job";
 import { Button } from "@/components/ui/button";
-import { useForm, Controller } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -13,10 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import useFetch from "@/hooks/useFetch";
-import { addJobPost, generateJobPost } from "@/actions/job";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const TestTimeout = async () => {
   console.log("TestTimeout called");
@@ -46,7 +45,6 @@ export default function JobForm() {
   const { control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       applicationLink: "",
-      generateCoverLetter: false,
       jobTitle: "",
       jobDescription: "",
       jobRequirements: "",
@@ -60,7 +58,6 @@ export default function JobForm() {
     },
   });
   const router = useRouter();
-  const generateCoverLetter = watch("generateCoverLetter");
 
   const handleNext = async () => {
     // get the url value
@@ -87,9 +84,8 @@ export default function JobForm() {
 
   const onFormSubmit = async (data) => {
     console.log("Form Data:", data);
-    const { generateCoverLetter, ...updatedData } = data;
 
-    await updateSubmitFn(updatedData);
+    await updateSubmitFn(data);
   };
 
   useEffect(() => {
@@ -165,21 +161,6 @@ export default function JobForm() {
                     control={control}
                     render={({ field }) => (
                       <Input type="url" placeholder="Enter a URL" {...field} />
-                    )}
-                  />
-                </div>
-                <div>
-                  <Controller
-                    name="generateCoverLetter"
-                    control={control}
-                    render={({ field }) => (
-                      <Label className="flex items-center space-x-2 text-md">
-                        <Checkbox
-                          checked={field.value} // Bind the checked state to the field value
-                          onCheckedChange={(checked) => field.onChange(checked)} // Update the field value on change
-                        />
-                        <span>Do you want to generate a cover letter?</span>
-                      </Label>
                     )}
                   />
                 </div>

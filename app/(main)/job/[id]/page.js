@@ -1,5 +1,6 @@
 import { getJobPostById } from "@/actions/job";
 import JobDetails from "./_components/JobDetails";
+import JobCoverLetter from "./_components/JobCoverLetter";
 
 export default async function JobSinglePage({ params }) {
   const jobPosting = {
@@ -32,7 +33,12 @@ export default async function JobSinglePage({ params }) {
 
   return (
     <main className="flex items-center justify-center min-h-screen">
-      {jobPost && <JobDetails jobPost={jobPost} />}
+      {jobPost && (
+        <div className="flex flex-col gap-4">
+          <JobDetails jobPost={jobPost} />
+          <JobCoverLetter jobPost={jobPost} />
+        </div>
+      )}
 
       {!jobPost && (
         <div className="flex flex-col items-center justify-center min-h-screen">

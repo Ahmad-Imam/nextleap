@@ -1,13 +1,6 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  MapPinIcon,
-  BanknoteIcon,
-  UsersIcon,
-  ClockIcon,
-  MoreVerticalIcon,
-} from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { formatDate } from "@/lib/utils";
+import {
+  BanknoteIcon,
+  ClockIcon,
+  MapPinIcon,
+  MoreVerticalIcon,
+  UsersIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 export function JobCard({
@@ -81,7 +81,7 @@ export function JobCard({
         </div>
       </CardContent>
 
-      <CardFooter className="flex justify-between">
+      <CardFooter className="flex md:flex-col xl:flex-row justify-between items-center gap-2 md:items-start lg:items-center">
         <div className="flex items-center">
           {status === "open" && (
             <>

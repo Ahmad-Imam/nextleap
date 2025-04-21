@@ -3,32 +3,32 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
-  SidebarProvider,
-  SidebarTrigger,
   SidebarInset,
+  SidebarProvider,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { DashboardNav } from "./DashboardNav";
 
 export function DashboardSidebar({ children }) {
   return (
     <SidebarProvider>
-      <div className="flex w-full ">
+      <div className="flex w-full">
         <Sidebar
-          className="flex-1 fixed left-0 top-0 z-20 h-screen pt-20 "
+          className="w-64 h-screen"
           collapsible="icon"
+          style={{ position: "static" }}
         >
           {/* <SidebarHeader className="flex h-14 ">
             <SidebarTrigger />
           </SidebarHeader> */}
-          <SidebarContent>
+          <SidebarContent className={"bg-background"}>
             <DashboardNav />
           </SidebarContent>
           <SidebarRail />
         </Sidebar>
         {/* Updated SidebarInset classes */}
-        <SidebarInset className="w-2/3 transition-all duration-300 ease-in-out ">
+        <SidebarInset className="flex-1 transition-all duration-300 ease-in-out">
           <header className="sticky top-0 z-10 flex h-14 items-center bg-background px-4">
             <SidebarTrigger />
             <h2 className="ml-2 text-lg font-semibold"></h2>

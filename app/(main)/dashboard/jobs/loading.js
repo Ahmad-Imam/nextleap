@@ -2,11 +2,11 @@ import { PickaxeIcon } from "lucide-react";
 
 export default function Loading() {
   return (
-    <div className="min-h-screen w-full inset-0 flex items-center justify-center dark:bg-slate-900">
+    <div className="min-h-screen w-full inset-0 flex items-center justify-center ">
       <div className="text-center">
         <div className="inline-flex">
           <PickaxeIcon className="w-16 h-16 text-primary animate-bounce" />
-          <div className="absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full bg-primary animate-ping"></div>
+          <div className="absolute top-0 right-0 -mr-1 -mt-1 w-4 h-4 rounded-full  animate-ping"></div>
         </div>
         <h2 className="mt-4 text-2xl font-semibold text-foreground">
           Loading NextLeap

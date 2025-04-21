@@ -1,7 +1,5 @@
 "use server";
 
-"use server";
-
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -275,4 +273,71 @@ export async function getUpcomingInterviewsForUser() {
   }
   upcomingInterviews.sort((a, b) => new Date(a.date) - new Date(b.date));
   return upcomingInterviews;
+}
+
+export async function generateCoverLetter(job) {
+  console.log("from server");
+  // console.log(job);
+
+  const user = await getUser();
+  // console.log(user);
+
+  const prompt = `
+         remember you are an expert recruiter. This is the job post : ${JSON.stringify(
+           job
+         )} and this is the user profile : ${JSON.stringify(user)}.
+          next go through the job post and user details and generate a cover letter for the job post in a professional tone
+         that will make the user stand out from other applicants. The cover letter should be concise, clear, and tailored to the specific job description.Make sure to include the following details in the cover letter:
+         return only the cover letter in a string format without any additional notes or explanations.
+        
+        IMPORTANT: Return ONLY the string content. No additional text, notes, or markdown formatting. DONOT INLCUDE ANY HTML TAGS INSIDE THE CONTENTS. DONOT CREATE HIRING MANAGER NAMES IF IT IS NOT GIVEN.
+        `;
+
+  const result = await model.generateContent(prompt);
+  const response = result.response;
+  const text = response.text();
+  const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+  console.log("cleanedText");
+  // console.log(cleanedText);
+
+  if (!cleanedText) {
+    throw new Error("Error generating cover letter: No response from AI model");
+  }
+
+  const updatedJobPost = updateCoverLetter(job.id, cleanedText);
+
+  if (!updatedJobPost) {
+    throw new Error("Error updating cover letter in the database");
+  }
+  revalidatePath(`/job/${job.id}`);
+  return cleanedText;
+}
+
+export async function updateCoverLetter(jobId, coverLetter) {
+  const user = await getUser();
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+  if (!user.id) {
+    throw new Error("User not found");
+  }
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
+  if (!coverLetter) {
+    throw new Error("Cover letter data is required");
+  }
+
+  const updatedJobPost = await db.job.update({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+    data: {
+      coverLetter: coverLetter,
+      updatedAt: new Date(),
+    },
+  });
+
+  return updatedJobPost;
 }

@@ -1,23 +1,14 @@
-import React from "react";
-import { ModeToggle } from "./ModeToggle";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "./ui/button";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import {
   ChevronDown,
   FileText,
   LayoutDashboard,
-  Stars,
   PenBox,
-  GraduationCap,
+  Stars,
 } from "lucide-react";
+import Link from "next/link";
+import { ModeToggle } from "./ModeToggle";
+import { Button } from "./ui/button";
 
 import {
   DropdownMenu,
@@ -32,10 +23,16 @@ export default async function Header() {
   // console.log(user);
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/">
-          <p>Logo</p>
-        </Link>
+      <nav className="mx-auto px-4 h-16 flex items-center justify-between text-xl">
+        <div className="flex items-center space-x-2 md:space-x-4">
+          <Link href="/">
+            <p className="font-bold">NextStep</p>
+          </Link>
+
+          <Link href="/faq">
+            <p>FAQ</p>
+          </Link>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2 md:space-x-4">
@@ -43,10 +40,10 @@ export default async function Header() {
             <Link href="/dashboard">
               <Button
                 variant="outline"
-                className="hidden md:inline-flex items-center gap-2"
+                className="hidden md:inline-flex items-center gap-2 text-lg"
               >
-                <LayoutDashboard className="h-4 w-4" />
-                Industry Insights
+                <LayoutDashboard className="h-4 w-4 " />
+                Dashboard
               </Button>
               <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
                 <LayoutDashboard className="h-4 w-4" />
@@ -58,32 +55,32 @@ export default async function Header() {
               <DropdownMenuTrigger asChild>
                 <Button className="flex items-center gap-2">
                   <Stars className="h-4 w-4" />
-                  <span className="hidden md:block">Growth Tools</span>
+                  <span className="hidden md:block text-lg">Create</span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
-                  <Link href="/resume" className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    Build Resume
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
                   <Link
-                    href="/ai-cover-letter"
+                    href="/dashboard/resume-builder"
                     className="flex items-center gap-2"
                   >
-                    <PenBox className="h-4 w-4" />
-                    Cover Letter
+                    <FileText className="h-4 w-4" />
+                    Resume
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link href="/create/job" className="flex items-center gap-2">
+                    <PenBox className="h-4 w-4" />
+                    Job Application
+                  </Link>
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem asChild>
                   <Link href="/interview" className="flex items-center gap-2">
                     <GraduationCap className="h-4 w-4" />
                     Interview Prep
                   </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </SignedIn>

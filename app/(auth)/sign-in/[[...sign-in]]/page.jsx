@@ -1,9 +1,8 @@
 import { SignIn } from "@clerk/nextjs";
-import React from "react";
 
 export default function SignInPage() {
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <SignIn
         signInFallbackRedirectUrl="/"
         // signInForceRedirectUrl="/onboarding"

@@ -8,20 +8,19 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  clerkUserId   String        @unique
-  email         String        @unique
+  id            String   @id @default(uuid())
+  clerkUserId   String   @unique
+  email         String   @unique
   name          String?
   imageUrl      String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   bio           String?
   socials       Json[]
   skills        Json[]
   education     Json[]
   experience    Json[]
   proj          Json[]
-  coverLetter   CoverLetter[]
   jobs          Job[]
   resume        Resume[]
   resumeContent Json?
@@ -39,27 +38,14 @@ model Resume {
   user      User     @relation(fields: [userId], references: [id])
 }
 
-model CoverLetter {
-  id        String   @id @default(cuid())
-  userId    String
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  jobId     String?  @unique
-  job       Job?     @relation(fields: [jobId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-
-  @@index([userId])
-}
-
 model Job {
-  id               String       @id @default(cuid())
+  id               String   @id @default(cuid())
   companyName      String
   location         String?
   salary           String?
-  status           String       @default("open")
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  status           String   @default("open")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
   userId           String
   applicationLink  String?
   industry         String?
@@ -70,10 +56,10 @@ model Job {
   coverLetterId    String?
   jobRequirements  String[]
   responsibilities String[]
-  isBookmark       Boolean      @default(false)
+  isBookmark       Boolean  @default(false)
   timeline         Json[]
-  coverLetter      CoverLetter?
-  user             User         @relation(fields: [userId], references: [id])
+  coverLetter      String?
+  user             User     @relation(fields: [userId], references: [id])
 
   @@index([companyName])
 }

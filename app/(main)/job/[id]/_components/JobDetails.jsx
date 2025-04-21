@@ -1,23 +1,15 @@
-import React from "react";
-
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
+  BanknoteIcon,
   BriefcaseIcon,
   BuildingIcon,
   MapPinIcon,
-  BanknoteIcon,
 } from "lucide-react";
-import { ApplicationTimeline } from "./JobTimeline";
 import Link from "next/link";
 import JobBookmark from "./JobBookmark";
+import { ApplicationTimeline } from "./JobTimeline";
 
 export default function JobDetails({ jobPost }) {
   const {
