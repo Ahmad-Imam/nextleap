@@ -1,5 +1,3 @@
-import React from "react";
-import { JobCard } from "../_components/JobCard";
 import JobList from "./_components/JobList";
 
 export default function JobsPage() {
@@ -190,7 +188,7 @@ export default function JobsPage() {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-6xl mx-auto w-full">
       <h1 className="text-2xl font-bold mb-4">All Tracked Jobs</h1>
       <JobList jobPosts={jobPosts} />
     </div>

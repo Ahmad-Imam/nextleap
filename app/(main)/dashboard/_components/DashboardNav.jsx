@@ -17,7 +17,6 @@ import {
   FileUserIcon,
   HelpCircleIcon,
   LayoutDashboard,
-  MessageSquareIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
@@ -94,7 +93,7 @@ export function DashboardNav() {
           </SidebarMenuButton>
         </SidebarMenuItem>
 
-        <SidebarMenuItem>
+        {/* <SidebarMenuItem>
           <SidebarMenuButton
             asChild
             isActive={pathname.startsWith("/dashboard/messages")}
@@ -104,7 +103,7 @@ export function DashboardNav() {
               <span>Messages</span>
             </Link>
           </SidebarMenuButton>
-        </SidebarMenuItem>
+        </SidebarMenuItem> */}
       </SidebarMenu>
 
       <SidebarSeparator className="my-4" />

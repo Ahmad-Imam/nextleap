@@ -1,10 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { buildResumeMarkdown } from "@/lib/markdownConverter";
 import MDEditor from "@uiw/react-md-editor";
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { DownloadIcon, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 // import jsPDF from "jspdf";
 // import html2canvas from "html2canvas-pro";
@@ -40,7 +38,7 @@ export default function ResumePreview({ previewContent }) {
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 w-full flex-1">
       <Button
         onClick={generatePDF}
         disabled={isGenerating}

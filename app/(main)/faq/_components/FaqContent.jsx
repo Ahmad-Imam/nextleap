@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function FaqContent() {
@@ -40,32 +40,6 @@ export default function FaqContent() {
                     resumes, generate cover letters, and more, all in one place.
                   </AccordionContent>
                 </AccordionItem>
-
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Is NextLeap free to use?</AccordionTrigger>
-                  <AccordionContent>
-                    NextLeap offers a free tier that includes basic job tracking
-                    and application management features. We also offer premium
-                    plans with advanced features like AI cover letter
-                    generation, unlimited resume storage, and detailed
-                    analytics. Check our pricing page for more details on each
-                    plan.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>
-                    How secure is my data on NextLeap?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    We take data security very seriously. All your personal
-                    information, resumes, and job application details are
-                    encrypted and stored securely. We never share your data with
-                    third parties without your explicit consent. You can review
-                    our privacy policy for more details on how we protect your
-                    information.
-                  </AccordionContent>
-                </AccordionItem>
               </Accordion>
             </TabsContent>
 
@@ -88,8 +62,8 @@ export default function FaqContent() {
                         position, and description
                       </li>
                     </ol>
-                    Both options are available from your dashboard by clicking
-                    the "Add Job" button.
+                    Both options are available from your dashboard by going to
+                    the "Create Job" page.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -100,10 +74,9 @@ export default function FaqContent() {
                   <AccordionContent>
                     To update the status of your application, navigate to the
                     specific job entry in your dashboard and click on the status
-                    dropdown. You can select from options like "Applied,"
-                    "Interview Scheduled," "Selected," or "Rejected." For
-                    interview stages, you can also add dates to keep track of
-                    your schedule.
+                    buttons. You can select options like "Applied," "Interview,"
+                    "Selected," or "Rejected." For interview stages, you can
+                    also add dates to keep track of your schedule.
                   </AccordionContent>
                 </AccordionItem>
 
@@ -116,6 +89,18 @@ export default function FaqContent() {
                     but not ready to apply for yet. These bookmarked jobs will
                     appear in a dedicated section of your dashboard, making it
                     easy to find and apply to them when you're ready.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4">
+                  <AccordionTrigger>
+                    How do I generate a cover letter?
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    To generate a cover letter, go to the job application you
+                    want to apply for and click the "Generate Cover Letter"
+                    button. It will create a customized cover letter based on
+                    the job and your user profile.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -144,11 +129,11 @@ export default function FaqContent() {
                   </AccordionTrigger>
                   <AccordionContent>
                     In the "Resumes" section of your dashboard, you can create
-                    and manage multiple versions of your resume. Click "Create
-                    New Resume" to start from scratch or duplicate an existing
-                    one to make modifications. You can tailor each resume to
-                    different job types or industries to increase your chances
-                    of success.
+                    and manage multiple versions of your resume. Click "Resume
+                    Builder" to start creating. You can choose to start from
+                    your profile or use last created resume as a template You
+                    can tailor each resume to different job types or industries
+                    to increase your chances of success and save them for later
                   </AccordionContent>
                 </AccordionItem>
 
@@ -158,11 +143,9 @@ export default function FaqContent() {
                   </AccordionTrigger>
                   <AccordionContent>
                     When you update a job application status to "Interview," you
-                    can add the interview date, time, and any notes. These
-                    interviews will appear in your "Upcoming Interviews" section
-                    on the dashboard, showing all interviews scheduled within
-                    the next 15 days. You'll also receive email reminders before
-                    each interview.
+                    can add the interview date. These interviews will appear in
+                    your "Upcoming Interviews" section on the dashboard, showing
+                    all interviews scheduled within the next 15 days.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -179,33 +162,7 @@ export default function FaqContent() {
                     Creating an account is simple. Click the "Sign Up" button in
                     the top right corner of the page, enter your email address
                     and create a password. You can also sign up using your
-                    Google or LinkedIn account for faster registration.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>
-                    Can I export my job application data?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes, you can export all your job application data in CSV or
-                    PDF format. This is useful for keeping offline records or
-                    sharing your job search progress with a career coach. To
-                    export your data, go to your account settings and select the
-                    "Export Data" option.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>
-                    How do I upgrade or downgrade my subscription?
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    To change your subscription plan, go to your account
-                    settings and select the "Subscription" tab. From there, you
-                    can view available plans and make changes to your current
-                    subscription. Changes will take effect at the start of your
-                    next billing cycle.
+                    Google account for faster registration.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>

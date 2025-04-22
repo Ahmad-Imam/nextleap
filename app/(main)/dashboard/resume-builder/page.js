@@ -1,19 +1,13 @@
-import React, { Suspense } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ResumeForm from "./_components/ResumeForm";
-import ResumeBuilder from "./_components/ResumeBuilder";
 import { getUser } from "@/actions/user";
-import ResumeOrder from "./_components/ResumeOrder";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResumeTabClient from "./_components/ResumeTabClient";
 
 export default async function ResumeBuilderPage() {
   const loggedUser = await getUser();
 
   return (
-    <div data-color-mode="light" className="space-y-4">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+    <div className="space-y-4 w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center space-y-4">
         <h1 className="font-bold text-5xl md:text-6xl">Resume Builder</h1>
         <div className="space-x-2">
           {/* <Button
@@ -46,7 +40,7 @@ export default async function ResumeBuilderPage() {
               </>
             )}
           </Button> */}
-          <Button>Click</Button>
+          {/* <Button>Click</Button> */}
         </div>
       </div>
 

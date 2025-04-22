@@ -13,9 +13,9 @@ import { DashboardNav } from "./DashboardNav";
 export function DashboardSidebar({ children }) {
   return (
     <SidebarProvider>
-      <div className="flex w-full">
+      <div className="flex w-full ">
         <Sidebar
-          className="w-64 h-screen"
+          className="w-64 h-screen "
           collapsible="icon"
           style={{ position: "static" }}
         >
@@ -28,13 +28,15 @@ export function DashboardSidebar({ children }) {
           <SidebarRail />
         </Sidebar>
         {/* Updated SidebarInset classes */}
-        <SidebarInset className="flex-1 transition-all duration-300 ease-in-out">
-          <header className="sticky top-0 z-10 flex h-14 items-center bg-background px-4">
+        <SidebarInset className="flex flex-col flex-1 transition-all duration-300 ease-in-out ">
+          <header className="sticky top-0 z-10 flex h-14 items-center bg-background px-4 ">
             <SidebarTrigger />
             <h2 className="ml-2 text-lg font-semibold"></h2>
           </header>
           {/* Updated main element classes */}
-          <main className="p-4 w-full max-w-full ">{children}</main>
+          <main className="flex-1 w-full  xl:w-6xl lg:w-3xl md:w-2xl sm:w-xl">
+            {children}
+          </main>
         </SidebarInset>
       </div>
     </SidebarProvider>

@@ -1,11 +1,11 @@
 // ResumeTabClient.jsx
 "use client";
-import React, { Suspense, useState } from "react";
-import ResumeOrder from "./ResumeOrder";
-import ResumeBuilder from "./ResumeBuilder";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ResumeForm from "./ResumeForm";
 import { Button } from "@/components/ui/button";
+import { TabsContent } from "@/components/ui/tabs";
+import { useState } from "react";
+import ResumeBuilder from "./ResumeBuilder";
+import ResumeForm from "./ResumeForm";
+import ResumeOrder from "./ResumeOrder";
 
 export default function ResumeTabClient({ loggedUser }) {
   const listItems = [
@@ -60,7 +60,7 @@ export default function ResumeTabClient({ loggedUser }) {
     <>
       <TabsContent value="edit">
         {!resumeMode && (
-          <div className="flex flex-col justify-between items-center gap-2 ">
+          <div className="flex flex-col justify-between items-center space-y-6 pt-6 ">
             <Button
               onClick={() => {
                 setSelectMode(loggedUser);
@@ -83,12 +83,11 @@ export default function ResumeTabClient({ loggedUser }) {
 
         {resumeMode && (
           <>
-            <Suspense fallback={<div>Loading...</div>}>
-              <ResumeForm
-                loggedUser={selectMode}
-                handleModeChange={handleModeChange}
-              />
-            </Suspense>
+            <ResumeForm
+              loggedUser={selectMode}
+              handleModeChange={handleModeChange}
+            />
+
             <ResumeOrder items={items} setItems={handleItemsChange} />
           </>
         )}

@@ -1,7 +1,6 @@
-import React from "react";
-import ResumePreview from "../_components/ResumePreview";
 import { getResumeById } from "@/actions/resume";
 import ResumeName from "../_components/ResumeName";
+import ResumePreview from "../_components/ResumePreview";
 
 export default async function ResumePreviewPage({ params }) {
   const { id } = await params;
@@ -12,7 +11,7 @@ export default async function ResumePreviewPage({ params }) {
   }
 
   return (
-    <div className="p-4">
+    <div className="w-full">
       <h1 className="text-2xl font-bold mb-4">Resume Preview</h1>
       <ResumeName id={resume.id} name={resume.name} />
       <div className="flex flex-col gap-10">

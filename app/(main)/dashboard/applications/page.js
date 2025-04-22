@@ -1,5 +1,3 @@
-import React from "react";
-import { JobCard } from "../_components/JobCard";
 import JobList from "../jobs/_components/JobList";
 
 export default function ApplicationsPage() {
@@ -190,7 +188,7 @@ export default function ApplicationsPage() {
   ];
 
   return (
-    <div className="p-4">
+    <div className="max-w-6xl mx-auto w-full">
       <h1 className="text-2xl font-bold mb-4">All applied Jobs</h1>
       <JobList jobPosts={jobPosts} />
     </div>
