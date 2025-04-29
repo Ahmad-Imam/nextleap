@@ -87,7 +87,7 @@ export function JobCard({
             <>
               <Badge
                 variant="outline"
-                className="bg-blue-50 text-blue-700 border-blue-200"
+                className="bg-blue-50 text-blue-700 border-blue-200 p-2"
               >
                 Open
               </Badge>
@@ -97,7 +97,7 @@ export function JobCard({
             <>
               <Badge
                 variant="outline"
-                className="bg-blue-50 text-blue-700 border-blue-200"
+                className="bg-blue-50 text-blue-700 border-blue-200 p-2"
               >
                 Applied
               </Badge>
@@ -107,7 +107,7 @@ export function JobCard({
             <>
               <Badge
                 variant="outline"
-                className="bg-amber-50 text-amber-700 border-amber-200"
+                className="bg-amber-50 text-amber-700 border-amber-200 p-2"
               >
                 Interview Scheduled
               </Badge>
@@ -117,7 +117,7 @@ export function JobCard({
             <>
               <Badge
                 variant="outline"
-                className="bg-green-50 text-green-700 border-green-200"
+                className="bg-green-50 text-green-700 border-green-200 p-2"
               >
                 Selected
               </Badge>
@@ -127,7 +127,7 @@ export function JobCard({
             <>
               <Badge
                 variant="outline"
-                className="bg-red-50 text-red-700 border-red-200"
+                className="bg-red-50 text-red-700 border-red-200 p-2"
               >
                 Not Selected
               </Badge>

@@ -4,7 +4,7 @@ import { generateCoverLetter } from "@/actions/job";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function JobCoverLetter({ jobPost }) {
@@ -46,7 +46,7 @@ export default function JobCoverLetter({ jobPost }) {
       <CardHeader className={"flex flex-row justify-center"}>
         <Button
           variant=""
-          className="w-xs"
+          className="font-semibold text-lg p-6"
           disabled={isLoadingCoverLetter}
           onClick={handleGenerateCoverLetter}
         >
@@ -57,9 +57,7 @@ export default function JobCoverLetter({ jobPost }) {
       <CardContent className="w-full">
         <h2 className="text-lg font-bold">Generated Cover Letter</h2>
         <p className="my-2 text-md whitespace-pre-wrap">
-          <p className="whitespace-pre-wrap">
-            {coverLetter || "No cover letter generated yet."}
-          </p>
+          {coverLetter || "No cover letter generated yet."}
         </p>
       </CardContent>
     </Card>

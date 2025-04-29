@@ -6,7 +6,7 @@ export default async function ResumeBuilderPage() {
   const loggedUser = await getUser();
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-4 w-full p-4">
       <div className="flex flex-col md:flex-row justify-between items-center space-y-4">
         <h1 className="font-bold text-5xl md:text-6xl">Resume Builder</h1>
         <div className="space-x-2">

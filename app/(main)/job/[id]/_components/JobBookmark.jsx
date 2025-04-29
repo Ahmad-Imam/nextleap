@@ -1,11 +1,9 @@
 "use client";
 
 import { updateJobBookmark } from "@/actions/job";
-import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/useFetch";
 import { BookmarkMinusIcon, BookmarkPlusIcon } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export default function JobBookmark({ jobId, isBookmark }) {
@@ -42,7 +40,7 @@ export default function JobBookmark({ jobId, isBookmark }) {
         <BookmarkPlusIcon className="h-6 w-6 mr-1 text-xl" />
       )}
 
-      <span className="text-lg">
+      <span className="text-lg font-semibold">
         {isLoading ? "Loading..." : bookmarked ? "Bookmark -" : "Bookmark +"}
       </span>
     </button>

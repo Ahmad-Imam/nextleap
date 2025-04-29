@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function FaqContent() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 md:px-6">
+      <div className="px-4 md:px-6">
         <motion.div
           className="mx-auto max-w-4xl space-y-8"
           initial={{ opacity: 0 }}

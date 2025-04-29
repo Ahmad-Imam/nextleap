@@ -1,21 +1,7 @@
-import React from "react";
+import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Grid2X2Icon } from "lucide-react";
 import { JobCard } from "../JobCard";
-import {
-  CalendarIcon,
-  BriefcaseIcon,
-  PlusCircleIcon,
-  MailIcon,
-  CheckCircleIcon,
-  Grid2X2Icon,
-} from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -33,7 +19,7 @@ export default function DashboardTab({
       </TabsList>
 
       <TabsContent value="createdAt" className="space-y-4 w-full ">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {allJobPosts.slice(0, 5).map((jobPost) => (
             <JobCard
               key={jobPost.id}
@@ -79,7 +65,7 @@ export default function DashboardTab({
       </TabsContent>
 
       <TabsContent value="bookmarked" className="space-y-4 w-full">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {bookmarkedJobPosts.slice(0, 5).map((jobPost) => (
             <JobCard
               key={jobPost.id}
@@ -125,7 +111,7 @@ export default function DashboardTab({
       </TabsContent>
 
       <TabsContent value="applications" className="space-y-4 w-full">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {applicationJobPosts.slice(0, 5).map((jobPost) => (
             <JobCard
               key={jobPost.id}

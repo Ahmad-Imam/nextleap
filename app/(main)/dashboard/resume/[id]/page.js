@@ -11,7 +11,7 @@ export default async function ResumePreviewPage({ params }) {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full p-4">
       <h1 className="text-2xl font-bold mb-4">Resume Preview</h1>
       <ResumeName id={resume.id} name={resume.name} />
       <div className="flex flex-col gap-10">

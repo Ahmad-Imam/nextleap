@@ -1,8 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, VideoIcon, MapPinIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,12 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
 import { formatDate } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import Link from "next/link";
 
 export function UpcomingInterviews({ upcomingInterviews }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 w-full">
       <Card>
         <CardHeader>
           <CardTitle>Upcoming Interviews</CardTitle>
@@ -49,6 +48,11 @@ export function UpcomingInterviews({ upcomingInterviews }) {
                 </div>
               </div>
             ))}
+            {upcomingInterviews.length === 0 && (
+              <div className="text-sm font-semibold text-center">
+                No upcoming interviews scheduled.
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

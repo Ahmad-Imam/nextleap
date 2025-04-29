@@ -29,9 +29,9 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex flex-col items-center w-3/4 mx-auto">
+            <div className="flex flex-col mx-auto">
               <Header />
-              <main className="min-h-screen p-20 w-full mx-auto flex flex-col items-center ">
+              <main className="min-h-screen p-20 w-full mx-auto flex flex-col ">
                 {children}
               </main>
               <Toaster richColors />

@@ -8,7 +8,11 @@ export default async function ResumePage() {
   return (
     <div className="p-4 w-full">
       <h1 className="text-2xl font-bold mb-4">All Resumes</h1>
-      <ResumeList resumes={loggedUser?.resume} />
+      {loggedUser?.resume?.length > 0 ? (
+        <ResumeList resumes={loggedUser?.resume} />
+      ) : (
+        <div className="text-center text-gray-500">No resumes found.</div>
+      )}
     </div>
   );
 }

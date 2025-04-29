@@ -5,7 +5,7 @@ import { HelpCircle } from "lucide-react";
 export default function FaqHeader() {
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-muted/50 to-background">
-      <div className="container px-4 md:px-6">
+      <div className=" px-4 md:px-6">
         <motion.div
           className="flex flex-col items-center justify-center space-y-4 text-center"
           initial={{ opacity: 0, y: 20 }}

@@ -1,8 +1,5 @@
-import React from "react";
-
 // import { industries } from "@/data/industries";
 
-import { redirect } from "next/navigation";
 import JobForm from "./_components/JobForm";
 
 export default async function JobPage() {

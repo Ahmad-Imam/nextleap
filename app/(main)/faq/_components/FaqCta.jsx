@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 export default function FaqCTA() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-      <div className="container px-4 md:px-6">
+    <section className="w-full py-12 md:py-24 lg:py-32 ">
+      <div className="px-4 md:px-6">
         <motion.div
           className="flex flex-col items-center justify-center space-y-4 text-center"
           initial={{ opacity: 0, scale: 0.95 }}

@@ -4,7 +4,7 @@ import FaqHeader from "./_components/FaqHeader";
 
 export default function FAQPage() {
   return (
-    <div className="w-xl md:w-3xl lg:w-5xl xl:7xl max-w-full">
+    <div className="flex flex-col items-center justify-center w-full ">
       {/* Header */}
       <FaqHeader />
 

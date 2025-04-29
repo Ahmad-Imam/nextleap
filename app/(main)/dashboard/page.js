@@ -21,7 +21,7 @@ export default async function DashboardPage() {
   // console.log(upcomingInterviews);
 
   return (
-    <div className="max-w-6xl mx-auto w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">
+    <div className="p-4 mx-auto w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">
       <DashboardHeader />
 
       <DashboardTab

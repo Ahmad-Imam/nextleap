@@ -1,10 +1,6 @@
 "use client";
 // import { onboardingSchema } from "@/lib/schema";
-import React, { useState, useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { format } from "date-fns";
-import { CalendarIcon, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,21 +8,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { format } from "date-fns";
+import { CalendarIcon, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { updateUserOnboard, updateUserResumeContent } from "@/actions/user";
-import useFetch from "@/hooks/useFetch";
+import { updateUserResumeContent } from "@/actions/user";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import useFetch from "@/hooks/useFetch";
+import { useRouter } from "next/navigation";
 
 import {
   Select,
@@ -161,7 +160,7 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
 
   return (
     <div className="flex items-center justify-center bg-background w-full">
-      <Card className="w-full max-w-7xl my-10 mx-4">
+      <Card className="w-full my-10 mx-4">
         <CardHeader>
           <CardTitle className="gradient-title text-4xl">
             Create your Resume

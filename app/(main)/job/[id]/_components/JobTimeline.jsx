@@ -1,27 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { addTimelinePoint } from "@/actions/job";
+import { DatePicker } from "@/components/DatePicker";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import useFetch from "@/hooks/useFetch";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import {
+  CalendarDaysIcon,
   CalendarIcon,
   CheckCircle2Icon,
   XCircleIcon,
-  CalendarDaysIcon,
 } from "lucide-react";
-import useFetch from "@/hooks/useFetch";
-import { addTimelinePoint } from "@/actions/job";
-import { toast } from "sonner";
-import { DateTimePicker } from "@/components/date-time-picker";
-import { DatePicker } from "@/components/DatePicker";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export function ApplicationTimeline({ timeline, jobId }) {
   const [timelinePoints, setTimelinePoints] = useState(timeline ?? []);
@@ -180,21 +178,21 @@ export function ApplicationTimeline({ timeline, jobId }) {
   console.log("timelinePoints", timelinePoints);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       {/* Timeline */}
-      <div className="relative flex flex-col items-center">
+      <div className="relative flex flex-col items-center ">
         {/* Vertical line */}
         {timelinePoints.length > 0 && (
           <div className="absolute top-0 bottom-0 w-0.5 bg-slate-400" />
         )}
 
         {/* Timeline points */}
-        <div className="relative space-y-10 pb-4">
+        <div className="relative space-y-10 pb-4  w-full">
           {timelinePoints.map((point) => (
             <div
               key={point.id}
               className={cn(
-                "flex justify-start items-center ",
+                "flex justify-start items-center  ",
                 point.position === "left"
                   ? "flex-row-reverse pl-8"
                   : "flex-row pr-8"
@@ -234,7 +232,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
         {!isApplied ? (
           <Button
             onClick={handleApply}
-            className="w-full max-w-[200px]"
+            className="w-full max-w-[200px] font-semibold"
             variant="default"
             disabled={jobPostLoading}
           >
@@ -246,7 +244,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full justify-start text-left font-normal"
+                  className="w-full justify-start text-left font-semibold"
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {interviewDate
@@ -268,7 +266,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
                   <Button
                     onClick={handleAddInterview}
                     disabled={!interviewDate || jobPostLoading}
-                    className="w-full"
+                    className="w-full font-semibold"
                   >
                     {jobPostLoading ? "Adding..." : "Confirm Interview"}
                   </Button>
@@ -276,11 +274,11 @@ export function ApplicationTimeline({ timeline, jobId }) {
               </PopoverContent>
             </Popover>
 
-            <div className="flex gap-2">
+            <div className="flex gap-6 pt-6">
               <Button
                 onClick={() => handleSetStatus("selected")}
                 variant="outline"
-                className="flex-1 border-green-200 hover:bg-green-50 hover:text-green-700"
+                className="flex-1 border-green-200 hover:bg-green-50 hover:text-green-700 font-semibold lg:text-lg p-6"
               >
                 <CheckCircle2Icon className="mr-2 h-4 w-4" />
                 {jobPostLoading ? "Finalizing..." : "Selected"}
@@ -288,7 +286,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
               <Button
                 onClick={() => handleSetStatus("rejected")}
                 variant="outline"
-                className="flex-1 border-red-200 hover:bg-red-50 hover:text-red-700"
+                className="flex-1 border-red-200 hover:bg-red-50 hover:text-red-700 font-semibold lg:text-lg p-6"
               >
                 <XCircleIcon className="mr-2 h-4 w-4" />
                 {jobPostLoading ? "Finalizing..." : "Rejected"}

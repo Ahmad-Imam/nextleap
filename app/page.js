@@ -8,7 +8,7 @@ export default async function Home() {
   // }
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <HomePage />
     </div>
   );

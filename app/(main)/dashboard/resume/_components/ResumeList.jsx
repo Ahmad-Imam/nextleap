@@ -1,14 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { JobCard } from "../../_components/JobCard";
 import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ResumeCard } from "./ResumeCard";
+import SortResumes from "./SortResumes";
 
 const BATCH_SIZE = 9;
 
-export default function ResumeList({ resumes }) {
+export default function ResumeList({ resumes: initialResumes }) {
+  const [resumes, setResumes] = useState(() => {
+    return [...initialResumes].sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  });
+
   const [displayedPosts, setDisplayedPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(BATCH_SIZE);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +26,7 @@ export default function ResumeList({ resumes }) {
     setDisplayedPosts(resumes.slice(0, BATCH_SIZE));
     setCurrentIndex(BATCH_SIZE);
     currentIndexRef.current = BATCH_SIZE;
-    // Cleanup: If you want to be extra safe, clear displayedPosts on unmount
+
     return () => {
       setDisplayedPosts([]);
       setCurrentIndex(BATCH_SIZE);
@@ -78,6 +85,9 @@ export default function ResumeList({ resumes }) {
 
   return (
     <>
+      <div className="flex justify-end mb-6">
+        <SortResumes resumes={initialResumes} onSort={setResumes} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {displayedPosts.map((resume) => (
           <ResumeCard key={resume.id} {...resume} />

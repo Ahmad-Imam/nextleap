@@ -1,12 +1,20 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { JobCard } from "../../_components/JobCard";
 import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { JobCard } from "../../_components/JobCard";
+import SortJobs from "./SortJobs";
 
 const BATCH_SIZE = 9;
 
-export default function JobList({ jobPosts }) {
+export default function JobList({ jobPosts: initialJobPosts }) {
+  const [jobPosts, setJobPosts] = useState(() => {
+    return [...initialJobPosts].sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  });
+
   const [displayedPosts, setDisplayedPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(BATCH_SIZE);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +82,9 @@ export default function JobList({ jobPosts }) {
 
   return (
     <>
+      <div className="flex justify-end mb-6">
+        <SortJobs jobPosts={initialJobPosts} onSort={setJobPosts} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {displayedPosts.map((jobPost) => (
           <JobCard key={jobPost.id} {...jobPost} />
