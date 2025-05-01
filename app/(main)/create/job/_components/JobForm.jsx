@@ -48,14 +48,14 @@ export default function JobForm() {
       applicationLink: "",
       jobTitle: "",
       jobDescription: "",
-      jobRequirements: "",
+      jobRequirements: [""],
       companyName: "",
       location: "",
       salary: "",
       jobType: "",
       level: "",
       industry: "",
-      responsibilities: "",
+      responsibilities: [""],
     },
   });
   const router = useRouter();
@@ -86,7 +86,18 @@ export default function JobForm() {
   const onFormSubmit = async (data) => {
     // console.log("Form Data:", data);
 
-    await updateSubmitFn(data);
+    const transformedData = {
+      ...data,
+      jobRequirements: data.jobRequirements
+        ? data.jobRequirements.split("\n").filter((req) => req.trim() !== "") // Split by newline and remove empty lines
+        : [],
+      // Also transform responsibilities if it's an array in Prisma
+      responsibilities: data.responsibilities
+        ? data.responsibilities.split("\n").filter((res) => res.trim() !== "")
+        : [],
+    };
+
+    await updateSubmitFn(transformedData);
   };
 
   useEffect(() => {
@@ -200,7 +211,7 @@ export default function JobForm() {
                 />
               </div>
               <div>
-                <label className="block mb-2">Job Description</label>
+                <label className="block mb-2">Job Description </label>
                 <Controller
                   name="jobDescription"
                   control={control}
@@ -215,7 +226,9 @@ export default function JobForm() {
                 />
               </div>
               <div>
-                <label className="block mb-2">Job Requirements</label>
+                <label className="block mb-2">
+                  Job Requirements (Atleast 2 separated by new line)
+                </label>
                 <Controller
                   name="jobRequirements"
                   control={control}
@@ -318,7 +331,9 @@ export default function JobForm() {
                 />
               </div>
               <div>
-                <label className="block mb-2">Responsibilities</label>
+                <label className="block mb-2">
+                  Responsibilities (Atleast 2 separated by new line)
+                </label>
                 <Controller
                   name="responsibilities"
                   control={control}
