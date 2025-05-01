@@ -24,12 +24,12 @@ export function UpcomingInterviews({ upcomingInterviews }) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {upcomingInterviews.map((interview) => (
+            {upcomingInterviews.map((interview, idx) => (
               <div
-                key={interview.id}
-                className="flex items-center gap-4 p-3 rounded-lg border"
+                key={idx}
+                className="flex justify-between items-center gap-4 p-3 rounded-lg border flex-wrap shadow-xs hover:shadow-md transition duration-200 ease-in-out"
               >
-                <div className="flex-1 min-w-0">
+                <div className="">
                   <p className="text-sm font-medium">{interview.jobTitle}</p>
                   <p className="text-xs text-muted-foreground truncate">
                     {interview.companyName}

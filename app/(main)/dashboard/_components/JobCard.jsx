@@ -1,20 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { formatDate } from "@/lib/utils";
-import {
-  BanknoteIcon,
-  ClockIcon,
-  MapPinIcon,
-  MoreVerticalIcon,
-  UsersIcon,
-} from "lucide-react";
+import { BanknoteIcon, ClockIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import Link from "next/link";
 
 export function JobCard({
@@ -33,28 +21,8 @@ export function JobCard({
     <Card className="overflow-hidden flex flex-col justify-between">
       <CardContent className="p-0">
         <div className="p-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="font-semibold text-lg mb-1">{jobTitle}</h3>
-              <p className="text-sm text-muted-foreground">{companyName}</p>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <MoreVerticalIcon className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit Job</DropdownMenuItem>
-                <DropdownMenuItem>View Applicants</DropdownMenuItem>
-                <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600">
-                  Delete Job
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <h3 className="font-semibold text-lg mb-1">{jobTitle}</h3>
+          <p className="text-sm text-muted-foreground">{companyName}</p>
 
           <div className="grid gap-2 mt-4">
             <div className="flex items-center text-sm">
@@ -81,7 +49,7 @@ export function JobCard({
         </div>
       </CardContent>
 
-      <CardFooter className="flex md:flex-col xl:flex-row justify-between items-center gap-2 md:items-start lg:items-center">
+      <CardFooter className="flex md:flex-col xl:flex-row justify-between items-center gap-2 md:items-start lg:items-center flex-wrap">
         <div className="flex items-center">
           {status === "open" && (
             <>

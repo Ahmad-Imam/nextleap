@@ -2,6 +2,11 @@ import { getResumeById } from "@/actions/resume";
 import ResumeName from "../_components/ResumeName";
 import ResumePreview from "../_components/ResumePreview";
 
+export const metadata = {
+  title: "NextStep - Resume Preview",
+  description: "Preview your resume",
+};
+
 export default async function ResumePreviewPage({ params }) {
   const { id } = await params;
 

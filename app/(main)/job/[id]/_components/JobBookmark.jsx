@@ -1,6 +1,7 @@
 "use client";
 
 import { updateJobBookmark } from "@/actions/job";
+import { Button } from "@/components/ui/button";
 import useFetch from "@/hooks/useFetch";
 import { BookmarkMinusIcon, BookmarkPlusIcon } from "lucide-react";
 import { useState } from "react";
@@ -29,8 +30,8 @@ export default function JobBookmark({ jobId, isBookmark }) {
   }
 
   return (
-    <button
-      className="w-full flex items-center justify-center gap-2 bg-accent-foreground text-accent rounded-md p-2 hover:cursor-pointer"
+    <Button
+      className="w-full flex items-center justify-center gap-2 text-accent rounded-md p-2 hover:cursor-pointer"
       onClick={handleClick}
       disabled={isLoading}
     >
@@ -43,6 +44,6 @@ export default function JobBookmark({ jobId, isBookmark }) {
       <span className="text-lg font-semibold">
         {isLoading ? "Loading..." : bookmarked ? "Bookmark -" : "Bookmark +"}
       </span>
-    </button>
+    </Button>
   );
 }

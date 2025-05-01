@@ -1,20 +1,7 @@
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  MapPinIcon,
-  BanknoteIcon,
-  UsersIcon,
-  ClockIcon,
-  MoreVerticalIcon,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
+import { ClockIcon } from "lucide-react";
 import Link from "next/link";
 
 export function ResumeCard({ name, createdAt, id }) {

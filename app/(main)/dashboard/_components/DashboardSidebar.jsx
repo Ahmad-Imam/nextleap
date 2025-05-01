@@ -3,7 +3,6 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarHeader,
   SidebarInset,
   SidebarProvider,
   SidebarRail,
@@ -13,16 +12,13 @@ import { DashboardNav } from "./DashboardNav";
 
 export function DashboardSidebar({ children }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className={""}>
       <div className="flex w-full ">
         <Sidebar
-          className="w-64 h-screen "
+          className="w-64 pt-20"
           collapsible="icon"
-          style={{ position: "static" }}
+          // style={{ position: "static" }}
         >
-          <SidebarHeader className="flex h-14 ">
-            <SidebarTrigger />
-          </SidebarHeader>
           <SidebarContent className={"bg-background"}>
             <DashboardNav />
           </SidebarContent>
@@ -31,6 +27,9 @@ export function DashboardSidebar({ children }) {
         {/* Updated SidebarInset classes */}
         <SidebarInset className="flex flex-col flex-1 transition-all duration-300 ease-in-out ">
           {/* Updated main element classes */}
+          <header className="p-4">
+            <SidebarTrigger />
+          </header>
           <main className="min-h-screen p-4">{children}</main>
         </SidebarInset>
       </div>

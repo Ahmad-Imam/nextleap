@@ -1,10 +1,10 @@
 "use client";
 // import { onboardingSchema } from "@/lib/schema";
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { updateUserOnboard } from "@/actions/user";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,10 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -25,10 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { updateUserOnboard } from "@/actions/user";
+import { Textarea } from "@/components/ui/textarea";
 import useFetch from "@/hooks/useFetch";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const TestTimeout = async () => {
   console.log("TestTimeout called");
@@ -88,8 +86,6 @@ export default function OnboardingForm({ industries }) {
         toast.error("Please add at least one social link.");
         return;
       }
-      console.log("values");
-      console.log(values);
 
       await updateUserFn({
         ...values,

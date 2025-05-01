@@ -12,21 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { updateUserResumeContent } from "@/actions/user";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
 
+import { DatePicker } from "@/components/DatePicker";
 import {
   Select,
   SelectContent,
@@ -38,7 +33,7 @@ import {
 } from "@/components/ui/select";
 
 const TestTimeout = async () => {
-  console.log("TestTimeout called");
+  // console.log("TestTimeout called");
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve("done");
@@ -137,7 +132,7 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
         email: loggedUser.email,
         ...values,
       };
-      console.log(newValues);
+      // console.log(newValues);
       await updateUserFn(newValues);
       setNewValues(newValues);
       if (updateError) {
@@ -166,7 +161,7 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
             Create your Resume
           </CardTitle>
           <CardDescription className={"text-lg"}>
-            Add your education, experience, project to build your resume.
+            Update your settings and save to preview your new resume
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -381,46 +376,22 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                           >
                             Start Date
                           </Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full justify-start text-left font-normal"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {watch(`education[${index}].startDate`) ? (
-                                  format(
-                                    new Date(
-                                      watch(`education[${index}].startDate`)
-                                    ),
-                                    "PPP"
+
+                          <DatePicker
+                            date={
+                              watch(`education[${index}].startDate`)
+                                ? new Date(
+                                    watch(`education[${index}].startDate`)
                                   )
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  watch(`education[${index}].startDate`)
-                                    ? new Date(
-                                        watch(`education[${index}].startDate`)
-                                      )
-                                    : undefined
-                                }
-                                onSelect={(date) =>
-                                  setValue(
-                                    `education[${index}].startDate`,
-                                    date ? format(date, "yyyy-MM-dd") : ""
-                                  )
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                                : undefined
+                            }
+                            setDate={(date) =>
+                              setValue(
+                                `education[${index}].startDate`,
+                                date ? format(date, "yyyy-MM-dd") : ""
+                              )
+                            }
+                          />
                           <input
                             type="hidden"
                             {...register(`education[${index}].startDate`, {
@@ -438,46 +409,19 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                           >
                             End Date
                           </Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full justify-start text-left font-normal"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {watch(`education[${index}].endDate`) ? (
-                                  format(
-                                    new Date(
-                                      watch(`education[${index}].endDate`)
-                                    ),
-                                    "PPP"
-                                  )
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  watch(`education[${index}].endDate`)
-                                    ? new Date(
-                                        watch(`education[${index}].endDate`)
-                                      )
-                                    : undefined
-                                }
-                                onSelect={(date) =>
-                                  setValue(
-                                    `education[${index}].endDate`,
-                                    date ? format(date, "yyyy-MM-dd") : ""
-                                  )
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                          <DatePicker
+                            date={
+                              watch(`education[${index}].endDate`)
+                                ? new Date(watch(`education[${index}].endDate`))
+                                : undefined
+                            }
+                            setDate={(date) =>
+                              setValue(
+                                `education[${index}].endDate`,
+                                date ? format(date, "yyyy-MM-dd") : ""
+                              )
+                            }
+                          />
                           <input
                             type="hidden"
                             {...register(`education[${index}].endDate`, {
@@ -748,46 +692,21 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                           >
                             Start Date
                           </Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full justify-start text-left font-normal"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {watch(`experience[${index}].startDate`) ? (
-                                  format(
-                                    new Date(
-                                      watch(`experience[${index}].startDate`)
-                                    ),
-                                    "PPP"
+                          <DatePicker
+                            date={
+                              watch(`experience[${index}].startDate`)
+                                ? new Date(
+                                    watch(`experience[${index}].startDate`)
                                   )
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  watch(`experience[${index}].startDate`)
-                                    ? new Date(
-                                        watch(`experience[${index}].startDate`)
-                                      )
-                                    : undefined
-                                }
-                                onSelect={(date) =>
-                                  setValue(
-                                    `experience[${index}].startDate`,
-                                    date ? format(date, "yyyy-MM-dd") : ""
-                                  )
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                                : undefined
+                            }
+                            setDate={(date) =>
+                              setValue(
+                                `experience[${index}].startDate`,
+                                date ? format(date, "yyyy-MM-dd") : ""
+                              )
+                            }
+                          />
                           <input
                             type="hidden"
                             {...register(`experience[${index}].startDate`, {
@@ -805,46 +724,21 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                           >
                             End Date
                           </Label>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full justify-start text-left font-normal"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {watch(`experience[${index}].endDate`) ? (
-                                  format(
-                                    new Date(
-                                      watch(`experience[${index}].endDate`)
-                                    ),
-                                    "PPP"
+                          <DatePicker
+                            date={
+                              watch(`experience[${index}].endDate`)
+                                ? new Date(
+                                    watch(`experience[${index}].endDate`)
                                   )
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  watch(`experience[${index}].endDate`)
-                                    ? new Date(
-                                        watch(`experience[${index}].endDate`)
-                                      )
-                                    : undefined
-                                }
-                                onSelect={(date) =>
-                                  setValue(
-                                    `experience[${index}].endDate`,
-                                    date ? format(date, "yyyy-MM-dd") : ""
-                                  )
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
+                                : undefined
+                            }
+                            setDate={(date) =>
+                              setValue(
+                                `experience[${index}].endDate`,
+                                date ? format(date, "yyyy-MM-dd") : ""
+                              )
+                            }
+                          />
                           <input
                             type="hidden"
                             {...register(`experience[${index}].endDate`, {

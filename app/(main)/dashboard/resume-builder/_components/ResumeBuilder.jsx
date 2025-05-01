@@ -1,20 +1,20 @@
 "use client";
+import { createResume } from "@/actions/resume";
 import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/useFetch";
 import { buildResumeMarkdown } from "@/lib/markdownConverter";
 import MDEditor from "@uiw/react-md-editor";
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { DownloadIcon, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import useFetch from "@/hooks/useFetch";
-import { createResume } from "@/actions/resume";
+import { v4 as uuidv4 } from "uuid";
 // import jsPDF from "jspdf";
 // import html2canvas from "html2canvas-pro";
 // import html2PDF from "jspdf-html2canvas";
 // import html2PDF from "jspdf-html2canvas-pro";
 
 export default function ResumeBuilder({ loggedUser, items }) {
-  console.log("builder");
+  // console.log("builder");
 
   const [previewContent, setPreviewContent] = useState(
     buildResumeMarkdown(loggedUser, items)
@@ -53,7 +53,7 @@ export default function ResumeBuilder({ loggedUser, items }) {
   };
 
   const handleSaveResume = async () => {
-    console.log("Saving resume...");
+    // console.log("Saving resume...");
     const resumeContent = buildResumeMarkdown(loggedUser, items);
     try {
       const data = {

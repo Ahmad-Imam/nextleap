@@ -2,6 +2,11 @@ import { getUser } from "@/actions/user";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResumeTabClient from "./_components/ResumeTabClient";
 
+export const metadata = {
+  title: "NextStep - Resume Builder",
+  description: "Build your resume",
+};
+
 export default async function ResumeBuilderPage() {
   const loggedUser = await getUser();
 
@@ -47,7 +52,9 @@ export default async function ResumeBuilderPage() {
       <Tabs defaultValue="edit" className="w-full space-y-4">
         <TabsList>
           <TabsTrigger value="edit">Form</TabsTrigger>
-          <TabsTrigger value="preview">Markdown</TabsTrigger>
+          <TabsTrigger className={"ml-6"} value="preview">
+            Preview
+          </TabsTrigger>
         </TabsList>
 
         <ResumeTabClient loggedUser={loggedUser} />

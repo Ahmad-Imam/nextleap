@@ -85,7 +85,7 @@ export default function JobList({ jobPosts: initialJobPosts }) {
       <div className="flex justify-end mb-6">
         <SortJobs jobPosts={initialJobPosts} onSort={setJobPosts} />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayedPosts.map((jobPost) => (
           <JobCard key={jobPost.id} {...jobPost} />
         ))}

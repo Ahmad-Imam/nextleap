@@ -34,7 +34,6 @@ export default function ResumeList({ resumes: initialResumes }) {
     };
   }, [resumes]);
 
-  // Keep ref in sync
   useEffect(() => {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
@@ -47,7 +46,6 @@ export default function ResumeList({ resumes: initialResumes }) {
           currentIndexRef.current,
           currentIndexRef.current + BATCH_SIZE
         );
-        // Filter out duplicates by id
         const prevIds = new Set(prev.map((resume) => resume.id));
         const uniqueNextPosts = nextPosts.filter(
           (resume) => !prevIds.has(resume.id)
@@ -60,7 +58,7 @@ export default function ResumeList({ resumes: initialResumes }) {
   }, [resumes]);
 
   useEffect(() => {
-    if (currentIndex >= resumes.length) return; // No more to load
+    if (currentIndex >= resumes.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {

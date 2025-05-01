@@ -1,6 +1,11 @@
 import { getUserResumes } from "@/actions/user";
 import ResumeList from "./_components/ResumeList";
 
+export const metadata = {
+  title: "NextStep - Resumes",
+  description: "View and manage your resumes",
+};
+
 export default async function ResumePage() {
   const loggedUser = await getUserResumes();
   //   console.log(loggedUser?.resume);

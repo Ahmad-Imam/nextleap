@@ -15,17 +15,17 @@ export default function JobCoverLetter({ jobPost }) {
     fn: generateCoverLetterFn,
   } = useFetch(generateCoverLetter);
 
-  console.log(coverLetterData);
+  // console.log(coverLetterData);
 
   const [coverLetter, setCoverLetter] = useState(jobPost?.coverLetter || null);
 
   useEffect(() => {
     if (coverLetterData && !isLoadingCoverLetter) {
-      console.log(coverLetterData);
+      // console.log(coverLetterData);
       // console.log("New Job Post:", updateSubmitResult);
       //route to the job page
       setCoverLetter(coverLetterData);
-      toast.success("Job post created successfully!");
+      toast.success("Cover letter generated successfully!");
       //   router.push("/job/" + updateSubmitResult?.id);
     }
   }, [coverLetterData, isLoadingCoverLetter]);

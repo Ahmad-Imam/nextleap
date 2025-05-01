@@ -1,6 +1,11 @@
 import { getJobPostsByApplication } from "@/actions/job";
 import JobList from "../jobs/_components/JobList";
 
+export const metadata = {
+  title: "NextStep - Applications",
+  description: "View all your applications",
+};
+
 export default async function ApplicationsPage() {
   // const jobPosts = [
   //   {

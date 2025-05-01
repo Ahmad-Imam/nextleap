@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import useFetch from "@/hooks/useFetch";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const TestTimeout = async () => {
-  console.log("TestTimeout called");
+  // console.log("TestTimeout called");
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve("done");
@@ -62,7 +63,7 @@ export default function JobForm() {
   const handleNext = async () => {
     // get the url value
     const url = watch("applicationLink");
-    console.log("URL:", url);
+    // console.log("URL:", url);
 
     if (url === "") {
       if (step < totalSteps) {
@@ -83,14 +84,14 @@ export default function JobForm() {
   };
 
   const onFormSubmit = async (data) => {
-    console.log("Form Data:", data);
+    // console.log("Form Data:", data);
 
     await updateSubmitFn(data);
   };
 
   useEffect(() => {
     if (updateUrlResult) {
-      console.log("updateResult:", updateUrlResult);
+      // console.log("updateResult:", updateUrlResult);
 
       // Set the job title, description, and requirements in the form
       [
@@ -204,7 +205,7 @@ export default function JobForm() {
                   name="jobDescription"
                   control={control}
                   render={({ field }) => (
-                    <textarea
+                    <Textarea
                       className="w-full border rounded p-2"
                       placeholder="Enter job description"
                       {...field}
@@ -219,7 +220,7 @@ export default function JobForm() {
                   name="jobRequirements"
                   control={control}
                   render={({ field }) => (
-                    <textarea
+                    <Textarea
                       className="w-full border rounded p-2"
                       placeholder="Enter job requirements"
                       {...field}
@@ -322,7 +323,7 @@ export default function JobForm() {
                   name="responsibilities"
                   control={control}
                   render={({ field }) => (
-                    <textarea
+                    <Textarea
                       className="w-full border rounded p-2"
                       placeholder="Enter responsibilities"
                       {...field}

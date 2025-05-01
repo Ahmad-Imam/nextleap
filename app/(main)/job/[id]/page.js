@@ -2,9 +2,14 @@ import { getJobPostById } from "@/actions/job";
 import JobCoverLetter from "./_components/JobCoverLetter";
 import JobDetails from "./_components/JobDetails";
 
+export const metadata = {
+  title: "NextStep - Job Details",
+  description: "Job Details",
+};
+
 export default async function JobSinglePage({ params }) {
   const { id } = await params;
-  console.log("id", id);
+  // console.log("id", id);
 
   const jobPost = await getJobPostById(id);
   // console.log(jobPost);

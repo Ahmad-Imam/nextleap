@@ -3,20 +3,10 @@
 import { addTimelinePoint } from "@/actions/job";
 import { DatePicker } from "@/components/DatePicker";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import useFetch from "@/hooks/useFetch";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import {
-  CalendarDaysIcon,
-  CalendarIcon,
-  CheckCircle2Icon,
-  XCircleIcon,
-} from "lucide-react";
+import { CalendarDaysIcon, CheckCircle2Icon, XCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -175,10 +165,10 @@ export function ApplicationTimeline({ timeline, jobId }) {
       router.refresh();
     }
   }, [jobPost, jobPostLoading]);
-  console.log("timelinePoints", timelinePoints);
+  // console.log("timelinePoints", timelinePoints);
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full items-center ">
       {/* Timeline */}
       <div className="relative flex flex-col items-center ">
         {/* Vertical line */}
@@ -228,7 +218,7 @@ export function ApplicationTimeline({ timeline, jobId }) {
       </div>
 
       {/* Action buttons */}
-      <div className="mt-6 space-y-3 w-full">
+      <div className="mt-6 space-y-3 w-full flex flex-col items-center">
         {!isApplied ? (
           <Button
             onClick={handleApply}
@@ -239,46 +229,23 @@ export function ApplicationTimeline({ timeline, jobId }) {
             {jobPostLoading ? "Applying..." : "Apply"}
           </Button>
         ) : !isFinalized ? (
-          <>
-            <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-semibold"
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {interviewDate
-                    ? format(interviewDate, "PPP")
-                    : `Add Interview ${interviewCount + 1}`}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                {/* <Calendar
-                  mode="single"
-                  selected={interviewDate}
-                  onSelect={setInterviewDate}
-                  initialFocus
-                /> */}
-
-                {/* <DateTimePicker value={startDate} onChange={setStartDate} /> */}
-                <DatePicker date={interviewDate} setDate={setInterviewDate} />
-                <div className="p-3 border-t border-border">
-                  <Button
-                    onClick={handleAddInterview}
-                    disabled={!interviewDate || jobPostLoading}
-                    className="w-full font-semibold"
-                  >
-                    {jobPostLoading ? "Adding..." : "Confirm Interview"}
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+          <div className="flex flex-col items-center">
+            <DatePicker date={interviewDate} setDate={setInterviewDate} />
+            <div className="p-3 border-t border-border">
+              <Button
+                onClick={handleAddInterview}
+                disabled={!interviewDate || jobPostLoading}
+                className="w-full font-semibold"
+              >
+                {jobPostLoading ? "Adding..." : "Confirm Interview"}
+              </Button>
+            </div>
 
             <div className="flex gap-6 pt-6">
               <Button
                 onClick={() => handleSetStatus("selected")}
                 variant="outline"
-                className="flex-1 border-green-200 hover:bg-green-50 hover:text-green-700 font-semibold lg:text-lg p-6"
+                className="flex-1 border-green-200 hover:bg-green-50 hover:text-green-700 font-semibold xl:text-lg p-4"
               >
                 <CheckCircle2Icon className="mr-2 h-4 w-4" />
                 {jobPostLoading ? "Finalizing..." : "Selected"}
@@ -286,13 +253,13 @@ export function ApplicationTimeline({ timeline, jobId }) {
               <Button
                 onClick={() => handleSetStatus("rejected")}
                 variant="outline"
-                className="flex-1 border-red-200 hover:bg-red-50 hover:text-red-700 font-semibold lg:text-lg p-6"
+                className="flex-1 border-red-200 hover:bg-red-50 hover:text-red-700 font-semibold xl:text-lg p-4"
               >
                 <XCircleIcon className="mr-2 h-4 w-4" />
                 {jobPostLoading ? "Finalizing..." : "Rejected"}
               </Button>
             </div>
-          </>
+          </div>
         ) : (
           <div className="text-center text-sm text-slate-500">
             Application process completed

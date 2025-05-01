@@ -1,10 +1,9 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getUser } from "./user";
 import { revalidatePath } from "next/cache";
+import { getUser } from "./user";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -12,9 +11,9 @@ const model = genAI.getGenerativeModel({
 });
 
 export async function generateJobPost(url) {
-  console.log("from server");
-  console.log(typeof url);
-  console.log(url);
+  // console.log("from server");
+  // console.log(typeof url);
+  // console.log(url);
   const urlResponse = await fetch(url.url);
   const html = await urlResponse.text();
 
@@ -41,7 +40,7 @@ export async function generateJobPost(url) {
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  console.log("cleanedText");
+  // console.log("cleanedText");
   // console.log(cleanedText);
 
   return JSON.parse(cleanedText);
@@ -58,7 +57,7 @@ export async function addJobPost(jobPost) {
   if (!jobPost) {
     throw new Error("Job post data is required");
   }
-  console.log("from server addJobPost");
+  // console.log("from server addJobPost");
   // console.log(jobPost);
 
   const updatedJobPost = {
@@ -75,7 +74,7 @@ export async function addJobPost(jobPost) {
     },
   });
 
-  console.log(newJobPost);
+  // console.log(newJobPost);
 
   return newJobPost;
 }
@@ -276,7 +275,7 @@ export async function getUpcomingInterviewsForUser() {
 }
 
 export async function generateCoverLetter(job) {
-  console.log("from server");
+  // console.log("from server");
   // console.log(job);
 
   const user = await getUser();
@@ -297,7 +296,7 @@ export async function generateCoverLetter(job) {
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  console.log("cleanedText");
+  // console.log("cleanedText");
   // console.log(cleanedText);
 
   if (!cleanedText) {

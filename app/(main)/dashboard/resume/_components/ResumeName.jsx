@@ -3,7 +3,7 @@
 import { updateResumeName } from "@/actions/resume";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export default function ResumeName({ name, id }) {
@@ -13,7 +13,7 @@ export default function ResumeName({ name, id }) {
 
   async function handleSave() {
     if (isEditing) {
-      console.log("Saving name:", editedName);
+      // console.log("Saving name:", editedName);
 
       try {
         setIsLoading(true);

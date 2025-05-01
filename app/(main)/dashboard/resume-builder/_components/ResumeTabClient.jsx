@@ -41,7 +41,7 @@ export default function ResumeTabClient({ loggedUser }) {
 
   const [selectMode, setSelectMode] = useState(loggedUser);
   const [resumeMode, setResumeMode] = useState(false);
-  console.log("tab client");
+  // console.log("tab client");
   // console.log(selectMode);
 
   function handleItemsChange(newItems) {

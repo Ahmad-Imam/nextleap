@@ -111,7 +111,7 @@ export default function JobDetails({ jobPost }) {
           </div>
 
           {/* Timeline Component */}
-          <div className="md:w-1/3 border-l pl-6 flex flex-col justify-start items-center">
+          <div className="md:w-1/3 border-l pl-6 flex flex-col justify-start items-center ">
             <h2 className="text-lg font-semibold mb-4">Application Status</h2>
             <ApplicationTimeline timeline={timeline} jobId={jobId} />
           </div>

@@ -1,13 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-import {
-  Item,
-  SortableList,
-  SortableListItem,
-} from "@/components/ui/sortable-list";
 import { Button } from "@/components/ui/button";
+import { SortableList, SortableListItem } from "@/components/ui/sortable-list";
 
 export default function ResumeOrder({ items, setItems }) {
   const handleAddItem = () => {
@@ -35,7 +29,7 @@ export default function ResumeOrder({ items, setItems }) {
     />
   );
 
-  console.log(items);
+  // console.log(items);
 
   return (
     <div className="container mx-auto p-4">

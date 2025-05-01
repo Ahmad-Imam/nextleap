@@ -10,7 +10,7 @@ import { toast } from "sonner";
 // import html2PDF from "jspdf-html2canvas-pro";
 
 export default function ResumePreview({ previewContent }) {
-  console.log("builder");
+  // console.log("builder");
 
   const [isGenerating, setIsGenerating] = useState(false);
 
