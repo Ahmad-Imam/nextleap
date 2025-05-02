@@ -2,7 +2,7 @@ import { getUserResumes } from "@/actions/user";
 import ResumeList from "./_components/ResumeList";
 
 export const metadata = {
-  title: "NextStep - Resumes",
+  title: "NextLeap - Resumes",
   description: "View and manage your resumes",
 };
 

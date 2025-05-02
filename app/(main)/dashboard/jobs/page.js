@@ -2,7 +2,7 @@ import { getJobPosts } from "@/actions/job";
 import JobList from "./_components/JobList";
 
 export const metadata = {
-  title: "NextStep - Jobs",
+  title: "NextLeap - Jobs",
   description: "View all your tracked jobs",
 };
 

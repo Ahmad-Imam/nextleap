@@ -3,7 +3,7 @@
 import JobForm from "./_components/JobForm";
 
 export const metadata = {
-  title: "NextStep - Create Job",
+  title: "NextLeap - Create Job",
   description: "Create a new job to track your progress",
 };
 

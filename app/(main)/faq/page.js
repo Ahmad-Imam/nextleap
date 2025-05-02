@@ -3,7 +3,7 @@ import FaqCTA from "./_components/FaqCta";
 import FaqHeader from "./_components/FaqHeader";
 
 export const metadata = {
-  title: "NextStep - FAQ",
+  title: "NextLeap - FAQ",
   description: "Frequently Asked Questions",
 };
 

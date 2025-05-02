@@ -3,7 +3,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ResumeTabClient from "./_components/ResumeTabClient";
 
 export const metadata = {
-  title: "NextStep - Resume Builder",
+  title: "NextLeap - Resume Builder",
   description: "Build your resume",
 };
 

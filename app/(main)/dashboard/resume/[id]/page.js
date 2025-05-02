@@ -3,7 +3,7 @@ import ResumeName from "../_components/ResumeName";
 import ResumePreview from "../_components/ResumePreview";
 
 export const metadata = {
-  title: "NextStep - Resume Preview",
+  title: "NextLeap - Resume Preview",
   description: "Preview your resume",
 };
 

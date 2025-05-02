@@ -2,7 +2,7 @@ import { getJobPostsByApplication } from "@/actions/job";
 import JobList from "../jobs/_components/JobList";
 
 export const metadata = {
-  title: "NextStep - Applications",
+  title: "NextLeap - Applications",
   description: "View all your applications",
 };
 

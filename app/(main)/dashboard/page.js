@@ -10,7 +10,7 @@ import DashboardTab from "./_components/DashboardTabs/DashboardTab";
 import { UpcomingInterviews } from "./_components/UpcomingInterviews";
 
 export const metadata = {
-  title: "NextStep - Dashboard",
+  title: "NextLeap - Dashboard",
   description: "Track your job applications and interviews",
 };
 

@@ -2,7 +2,7 @@ import { getUser } from "@/actions/user";
 import ProfileForm from "./_components/ProfileForm";
 
 export const metadata = {
-  title: "NextStep - Profile",
+  title: "NextLeap - Profile",
   description: "View and edit your profile",
 };
 

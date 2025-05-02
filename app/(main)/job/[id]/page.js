@@ -3,7 +3,7 @@ import JobCoverLetter from "./_components/JobCoverLetter";
 import JobDetails from "./_components/JobDetails";
 
 export const metadata = {
-  title: "NextStep - Job Details",
+  title: "NextLeap - Job Details",
   description: "Job Details",
 };
 

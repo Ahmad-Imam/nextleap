@@ -26,7 +26,7 @@ export default async function Header() {
       <nav className="mx-auto px-4 h-16 flex items-center justify-between text-xl">
         <div className="flex items-center space-x-2 md:space-x-4">
           <Link href="/">
-            <p className="font-bold">NextStep</p>
+            <p className="font-bold">NextLeap</p>
           </Link>
 
           <Link href="/faq">

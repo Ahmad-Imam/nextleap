@@ -2,7 +2,7 @@ import { getJobPostByBookmark } from "@/actions/job";
 import JobList from "../jobs/_components/JobList";
 
 export const metadata = {
-  title: "NextStep - Bookmarks",
+  title: "NextLeap - Bookmarks",
   description: "View all your bookmarked jobs",
 };
 

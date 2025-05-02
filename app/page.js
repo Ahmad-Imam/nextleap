@@ -1,7 +1,7 @@
 import HomePage from "@/components/HomePage";
 
 export const metadata = {
-  title: "NextStep - Home",
+  title: "NextLeap - Home",
   description: "Take your career to next level",
 };
 

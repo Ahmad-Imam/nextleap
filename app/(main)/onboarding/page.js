@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import OnboardingForm from "./_components/OnboardingForm";
 
 export const metadata = {
-  title: "NextStep - Onboarding",
+  title: "NextLeap - Onboarding",
   description: "Onboarding page",
 };
 
