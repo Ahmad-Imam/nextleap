@@ -11,9 +11,6 @@ const model = genAI.getGenerativeModel({
 });
 
 export async function generateJobPost(url) {
-  // console.log("from server");
-  // console.log(typeof url);
-  // console.log(url);
   const urlResponse = await fetch(url.url);
   const html = await urlResponse.text();
 
@@ -40,8 +37,6 @@ export async function generateJobPost(url) {
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  // console.log("cleanedText");
-  // console.log(cleanedText);
 
   return JSON.parse(cleanedText);
 }
@@ -57,8 +52,6 @@ export async function addJobPost(jobPost) {
   if (!jobPost) {
     throw new Error("Job post data is required");
   }
-  // console.log("from server addJobPost");
-  // console.log(jobPost);
 
   const updatedJobPost = {
     ...jobPost,
@@ -67,14 +60,11 @@ export async function addJobPost(jobPost) {
     updatedAt: new Date(),
   };
 
-  // console.log(updatedJobPost);
   const newJobPost = await db.job.create({
     data: {
       ...updatedJobPost,
     },
   });
-
-  // console.log(newJobPost);
 
   return newJobPost;
 }
@@ -88,7 +78,6 @@ export async function getJobPosts() {
     throw new Error("User not found");
   }
 
-  //sort by createdAt in descending order
   const jobPosts = await db.job.findMany({
     where: {
       userId: user.id,
@@ -103,8 +92,6 @@ export async function getJobPosts() {
 
 export async function getJobPostById(id) {
   const user = await getUser();
-  // console.log(id);
-  // console.log(user.id);
 
   if (!user) {
     throw new Error("User not authenticated");
@@ -137,8 +124,6 @@ export async function addTimelinePoint(jobId, newTimelinePoint) {
   if (!newTimelinePoint) {
     throw new Error("Timeline point data is required");
   }
-
-  //add timelinepoint to the timeline array of the job post
 
   const updatedJobPost = await db.job.update({
     where: {
@@ -236,7 +221,6 @@ export async function getUpcomingInterviewsForUser() {
   const user = await getUser();
   if (!user) throw new Error("User not authenticated");
 
-  // 1. Fetch all jobs for the user, including their timeline
   const jobs = await db.job.findMany({
     where: { userId: user.id },
     select: {
@@ -261,8 +245,7 @@ export async function getUpcomingInterviewsForUser() {
         new Date(item.date) > now &&
         new Date(item.date) <= nextWeek
     );
-    // console.log("interviews");
-    // console.log(interviews);
+
     interviews.forEach((interview) => {
       upcomingInterviews.push({
         ...interview,
@@ -275,11 +258,7 @@ export async function getUpcomingInterviewsForUser() {
 }
 
 export async function generateCoverLetter(job) {
-  // console.log("from server");
-  // console.log(job);
-
   const user = await getUser();
-  // console.log(user);
 
   const prompt = `
          remember you are an expert recruiter. This is the job post : ${JSON.stringify(
@@ -296,8 +275,6 @@ export async function generateCoverLetter(job) {
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  // console.log("cleanedText");
-  // console.log(cleanedText);
 
   if (!cleanedText) {
     throw new Error("Error generating cover letter: No response from AI model");

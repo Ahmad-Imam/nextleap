@@ -2,7 +2,7 @@
 
 ## Welcome to NextLeap.
 
-Live: https://kickstart-ahmadimam.vercel.app/
+Live: https://nextleap-one.vercel.app
 
 ## Information
 

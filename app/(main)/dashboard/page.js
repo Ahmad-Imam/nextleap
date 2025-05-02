@@ -16,18 +16,14 @@ export const metadata = {
 
 export default async function DashboardPage() {
   const allJobPosts = await getJobPosts();
-  // console.log(allJobPosts);
 
   const bookmarkedJobPosts = await getJobPostByBookmark();
 
   const applicationJobPosts = await getJobPostsByApplication();
-  // console.log(applicationJobPosts.length);
 
   const upcomingInterviews = await getUpcomingInterviewsForUser();
 
   const userResumes = await getUserResumes();
-
-  // console.log(upcomingInterviews);
 
   return (
     <div className="p-4 mx-auto w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">

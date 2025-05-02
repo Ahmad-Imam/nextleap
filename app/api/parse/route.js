@@ -1,6 +1,4 @@
-// app/api/extract/route.js
 import { NextResponse } from "next/server";
-// import { extractJobData } from "@/lib/extractJobData";
 
 export async function POST(request) {
   try {
@@ -8,8 +6,6 @@ export async function POST(request) {
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
     }
-
-    // const jobData = await extractJobData(url);
 
     if (jobData) {
       return NextResponse.json({ success: true, data: jobData });

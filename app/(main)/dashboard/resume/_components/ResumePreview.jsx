@@ -4,14 +4,8 @@ import MDEditor from "@uiw/react-md-editor";
 import { DownloadIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-// import jsPDF from "jspdf";
-// import html2canvas from "html2canvas-pro";
-// import html2PDF from "jspdf-html2canvas";
-// import html2PDF from "jspdf-html2canvas-pro";
 
 export default function ResumePreview({ previewContent }) {
-  // console.log("builder");
-
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePDF = async () => {

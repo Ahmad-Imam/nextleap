@@ -1,5 +1,5 @@
 "use client";
-// import { onboardingSchema } from "@/lib/schema";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,21 +32,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const TestTimeout = async () => {
-  // console.log("TestTimeout called");
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("done");
-    }, 2000); // 2 seconds delay
-  });
-};
-
 export default function ResumeForm({ loggedUser, handleModeChange }) {
-  console.log("form");
   const [modeChanged, setModeChanged] = useState(false);
   const [newValues, setNewValues] = useState({});
 
-  // console.log(loggedUser);
   const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
   const router = useRouter();
   const {
@@ -55,7 +44,6 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
     data: updateResult,
     error: updateError,
   } = useFetch(updateUserResumeContent);
-  ///imlement the updateUserFn function to update the user data resumecontent
 
   const {
     register,
@@ -65,7 +53,6 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
     watch,
     control,
   } = useForm({
-    // resolver: zodResolver(onboardingSchema),
     defaultValues: {
       bio: loggedUser?.bio || "",
       education: loggedUser?.education || [],
@@ -132,7 +119,7 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
         email: loggedUser.email,
         ...values,
       };
-      // console.log(newValues);
+
       await updateUserFn(newValues);
       setNewValues(newValues);
       if (updateError) {
@@ -147,7 +134,7 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
   useEffect(() => {
     if (updateResult?.success && !updateLoading && !modeChanged) {
       toast.success("Resume settings updated successfully!");
-      handleModeChange(newValues); // Only call once
+      handleModeChange(newValues);
       setModeChanged(true);
       router.refresh();
     }

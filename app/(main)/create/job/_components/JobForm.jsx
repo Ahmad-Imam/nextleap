@@ -18,22 +18,12 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const TestTimeout = async () => {
-  // console.log("TestTimeout called");
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("done");
-    }, 2000); // 2 seconds delay
-  });
-};
-
 export default function JobForm() {
   const {
     loading: updateLoadingUrl,
     fn: updateUrlFn,
     data: updateUrlResult,
   } = useFetch(generateJobPost);
-  // console.log(generateJobPost);
 
   const {
     loading: updateLoadingSubmit,
@@ -42,7 +32,7 @@ export default function JobForm() {
   } = useFetch(addJobPost);
 
   const [step, setStep] = useState(1);
-  const totalSteps = 2; // Total number of steps in the form
+  const totalSteps = 2;
   const { control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       applicationLink: "",
@@ -61,9 +51,7 @@ export default function JobForm() {
   const router = useRouter();
 
   const handleNext = async () => {
-    // get the url value
     const url = watch("applicationLink");
-    // console.log("URL:", url);
 
     if (url === "") {
       if (step < totalSteps) {
@@ -71,7 +59,6 @@ export default function JobForm() {
       }
     } else {
       await updateUrlFn({
-        // ...values,
         url,
       });
     }
@@ -79,19 +66,17 @@ export default function JobForm() {
 
   const handleBack = () => {
     if (step > 1) {
-      setStep(step - 1); // Move to the previous step
+      setStep(step - 1);
     }
   };
 
   const onFormSubmit = async (data) => {
-    // console.log("Form Data:", data);
-
     const transformedData = {
       ...data,
       jobRequirements: data.jobRequirements
-        ? data.jobRequirements.split("\n").filter((req) => req.trim() !== "") // Split by newline and remove empty lines
+        ? data.jobRequirements.split("\n").filter((req) => req.trim() !== "")
         : [],
-      // Also transform responsibilities if it's an array in Prisma
+
       responsibilities: data.responsibilities
         ? data.responsibilities.split("\n").filter((res) => res.trim() !== "")
         : [],
@@ -102,9 +87,6 @@ export default function JobForm() {
 
   useEffect(() => {
     if (updateUrlResult) {
-      // console.log("updateResult:", updateUrlResult);
-
-      // Set the job title, description, and requirements in the form
       [
         "jobTitle",
         "jobDescription",
@@ -122,7 +104,6 @@ export default function JobForm() {
         }
       });
 
-      // Move to the next step
       if (step < totalSteps) {
         setStep(step + 1);
       }
@@ -131,8 +112,6 @@ export default function JobForm() {
 
   useEffect(() => {
     if (updateSubmitResult && !updateLoadingSubmit) {
-      // console.log("New Job Post:", updateSubmitResult);
-      //route to the job page
       toast.success("Job post created successfully!");
       router.push("/job/" + updateSubmitResult?.id);
     }

@@ -27,7 +27,6 @@ const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
 
 export default function ProfileForm({ loggedUser }) {
   const router = useRouter();
-  // console.log(loggedUser);
 
   const defaultValues = {
     bio: loggedUser.bio || "",
@@ -115,7 +114,6 @@ export default function ProfileForm({ loggedUser }) {
       return;
     }
 
-    // console.log("Profile form submitted:", data);
     const newUser = await updateFn(data);
     if (updateError) {
       toast.error("Error updating profile: " + updateError.message);
@@ -128,9 +126,6 @@ export default function ProfileForm({ loggedUser }) {
       router.refresh();
     }
   }, [updateResult, updateLoading]);
-
-  //education needs major and result
-  //experience needs responsibilities and tech stack
 
   return (
     <Card className="w-full my-10 mx-6">

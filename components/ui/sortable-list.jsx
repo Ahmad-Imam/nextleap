@@ -2,8 +2,6 @@
 
 // npx shadcn-ui@latest add checkbox
 // npm  i react-use-measure
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
-import { Trash } from "lucide-react";
 import {
   AnimatePresence,
   LayoutGroup,
@@ -11,6 +9,7 @@ import {
   motion,
   useDragControls,
 } from "motion/react";
+import { useState } from "react";
 import useMeasure from "react-use-measure";
 
 import { cn } from "@/lib/utils";

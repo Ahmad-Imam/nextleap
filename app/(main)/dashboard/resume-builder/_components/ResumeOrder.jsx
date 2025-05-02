@@ -29,8 +29,6 @@ export default function ResumeOrder({ items, setItems }) {
     />
   );
 
-  // console.log(items);
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -47,7 +45,6 @@ export default function ResumeOrder({ items, setItems }) {
         setItems={setItems}
         onAddItem={handleAddItem}
         onResetItems={handleResetItems}
-        // onCompleteItem={handleCompleteItem}
         renderItem={renderItem}
         className="bg-gray-100 p-4 rounded-lg shadow-md"
       />

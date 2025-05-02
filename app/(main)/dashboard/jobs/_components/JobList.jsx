@@ -25,7 +25,7 @@ export default function JobList({ jobPosts: initialJobPosts }) {
     setDisplayedPosts(jobPosts.slice(0, BATCH_SIZE));
     setCurrentIndex(BATCH_SIZE);
     currentIndexRef.current = BATCH_SIZE;
-    // Cleanup: If you want to be extra safe, clear displayedPosts on unmount
+
     return () => {
       setDisplayedPosts([]);
       setCurrentIndex(BATCH_SIZE);
@@ -33,7 +33,6 @@ export default function JobList({ jobPosts: initialJobPosts }) {
     };
   }, [jobPosts]);
 
-  // Keep ref in sync
   useEffect(() => {
     currentIndexRef.current = currentIndex;
   }, [currentIndex]);
@@ -46,7 +45,7 @@ export default function JobList({ jobPosts: initialJobPosts }) {
           currentIndexRef.current,
           currentIndexRef.current + BATCH_SIZE
         );
-        // Filter out duplicates by id
+
         const prevIds = new Set(prev.map((job) => job.id));
         const uniqueNextPosts = nextPosts.filter((job) => !prevIds.has(job.id));
         return [...prev, ...uniqueNextPosts];
@@ -57,7 +56,7 @@ export default function JobList({ jobPosts: initialJobPosts }) {
   }, [jobPosts]);
 
   useEffect(() => {
-    if (currentIndex >= jobPosts.length) return; // No more to load
+    if (currentIndex >= jobPosts.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {

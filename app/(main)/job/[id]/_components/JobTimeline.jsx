@@ -143,21 +143,6 @@ export function ApplicationTimeline({ timeline, jobId }) {
               position: "left",
             };
 
-      // : !isFinalized
-      // ? {
-      //     id: "applied",
-      //     type: "applied",
-      //     date: new Date(),
-      //     position: "left",
-      //   }
-      // : {
-      //     id: status,
-      //     type: status,
-      //     date: new Date(),
-      //     position: timelinePoints.length % 2 === 0 ? "left" : "right",
-      //   };
-
-      // router.push("/");
       setTimelinePoints((prev) => [...prev, newTimelinePoint]);
       setInterviewDate(undefined);
       setCalendarOpen(false);
@@ -165,7 +150,6 @@ export function ApplicationTimeline({ timeline, jobId }) {
       router.refresh();
     }
   }, [jobPost, jobPostLoading]);
-  // console.log("timelinePoints", timelinePoints);
 
   return (
     <div className="flex flex-col w-full items-center ">

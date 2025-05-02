@@ -9,11 +9,8 @@ export const metadata = {
 
 export default async function JobSinglePage({ params }) {
   const { id } = await params;
-  // console.log("id", id);
 
   const jobPost = await getJobPostById(id);
-  // console.log(jobPost);
-  // console.log("jobPost", jobPost);
 
   return (
     <main className="flex items-center justify-center min-h-screen pt-10">

@@ -1,4 +1,3 @@
-// ResumeTabClient.jsx
 "use client";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
@@ -37,12 +36,9 @@ export default function ResumeTabClient({ loggedUser }) {
   ];
 
   const [items, setItems] = useState(listItems);
-  // console.log(items);
 
   const [selectMode, setSelectMode] = useState(loggedUser);
   const [resumeMode, setResumeMode] = useState(false);
-  // console.log("tab client");
-  // console.log(selectMode);
 
   function handleItemsChange(newItems) {
     if (newItems.length === 0) {

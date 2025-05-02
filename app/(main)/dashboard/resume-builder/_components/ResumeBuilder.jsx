@@ -8,14 +8,8 @@ import { DownloadIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
-// import jsPDF from "jspdf";
-// import html2canvas from "html2canvas-pro";
-// import html2PDF from "jspdf-html2canvas";
-// import html2PDF from "jspdf-html2canvas-pro";
 
 export default function ResumeBuilder({ loggedUser, items }) {
-  // console.log("builder");
-
   const [previewContent, setPreviewContent] = useState(
     buildResumeMarkdown(loggedUser, items)
   );
@@ -53,7 +47,6 @@ export default function ResumeBuilder({ loggedUser, items }) {
   };
 
   const handleSaveResume = async () => {
-    // console.log("Saving resume...");
     const resumeContent = buildResumeMarkdown(loggedUser, items);
     try {
       const data = {

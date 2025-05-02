@@ -10,7 +10,6 @@ export async function createResume(resumeData) {
     throw new Error("Resume is required");
   }
 
-  // Assuming you have a function to save the resume to your database
   const savedResume = await db.resume.create({
     data: {
       ...resumeData,
@@ -30,7 +29,6 @@ export async function getResumeById(resumeId) {
     throw new Error("Resume ID is required");
   }
 
-  // Assuming you have a function to fetch the resume from your database
   const resume = await db.resume.findUnique({
     where: {
       id: resumeId,

@@ -13,8 +13,6 @@ export default function ResumeName({ name, id }) {
 
   async function handleSave() {
     if (isEditing) {
-      // console.log("Saving name:", editedName);
-
       try {
         setIsLoading(true);
         await updateResumeName(id, editedName);

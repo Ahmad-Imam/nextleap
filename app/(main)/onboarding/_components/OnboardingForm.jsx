@@ -1,5 +1,5 @@
 "use client";
-// import { onboardingSchema } from "@/lib/schema";
+
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -28,15 +28,6 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const TestTimeout = async () => {
-  console.log("TestTimeout called");
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("done");
-    }, 2000); // 2 seconds delay
-  });
-};
-
 export default function OnboardingForm({ industries }) {
   const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
 
@@ -54,9 +45,7 @@ export default function OnboardingForm({ industries }) {
     setValue,
     watch,
     control,
-  } = useForm({
-    // resolver: zodResolver(onboardingSchema),
-  });
+  } = useForm({});
 
   const {
     fields: skillFields,
