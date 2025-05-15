@@ -42,9 +42,7 @@ NextLeap is a job management application built in Next.js, Prisma and NeonDB.
 
 | <img src="https://github.com/user-attachments/assets/6a3fe85a-e44c-458c-8518-eb1cf5a30655" width=100% height=100%> |
 | :----------------------------------------------------------------------------------------------------------------: |
-
-|
-_RESUME PREVIEW SCREEN_ |
+|                                                _RESUME PREVIEW SCREEN_                                             |
 
 | <img src="https://github.com/user-attachments/assets/3b39c294-cd78-4b4f-a302-40645a4cbe7a" width=100% height=100%> |
 | :----------------------------------------------------------------------------------------------------------------: |
