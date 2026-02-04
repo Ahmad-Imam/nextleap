@@ -110,11 +110,11 @@ export default function ProfileForm({ loggedUser }) {
       return;
     }
     if (!data.skills || data.skills.length === 0) {
-      toast.error("Please add at least one social link.");
+      toast.error("Please add at least one skill.");
       return;
     }
 
-    const newUser = await updateFn(data);
+    await updateFn(data);
     if (updateError) {
       toast.error("Error updating profile: " + updateError.message);
       return;
@@ -235,7 +235,7 @@ export default function ProfileForm({ loggedUser }) {
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={`skills[${idx}].level`}>Level</Label>
                     <Select
-                      value={field.level || ""}
+                      value={watch(`skills.${idx}.level`) || ""}
                       onValueChange={(value) =>
                         setValue(`skills.${idx}.level`, value, {
                           shouldValidate: true,
@@ -425,6 +425,7 @@ export default function ProfileForm({ loggedUser }) {
                       </div>
                     </div>
                     <Button
+                      type="button"
                       className="mt-6 mr-2 text-2xl"
                       variant="destructive"
                       onClick={() => removeEducation(index)}
@@ -436,6 +437,7 @@ export default function ProfileForm({ loggedUser }) {
               })}
             </div>
             <Button
+              type="button"
               className="my-4 text-md cursor-pointer border rounded-lg p-4"
               onClick={() =>
                 appendEducation({
@@ -537,6 +539,7 @@ export default function ProfileForm({ loggedUser }) {
                       </div>
                     </div>
                     <Button
+                      type="button"
                       className="mt-6 mr-2 text-2xl"
                       variant="destructive"
                       onClick={() => removeProjects(index)}
@@ -549,6 +552,7 @@ export default function ProfileForm({ loggedUser }) {
             </div>
 
             <Button
+              type="button"
               className="my-4 text-md cursor-pointer border rounded-lg p-4"
               onClick={() =>
                 appendProjects({
@@ -687,8 +691,8 @@ export default function ProfileForm({ loggedUser }) {
                           }
                           setDate={(date) =>
                             setValue(
-                              `experience[${index}].startDate`,
-                              date ? format(date, "endDate-MM-dd") : ""
+                              `experience[${index}].endDate`,
+                              date ? format(date, "yyyy-MM-dd") : ""
                             )
                           }
                         />
@@ -703,6 +707,7 @@ export default function ProfileForm({ loggedUser }) {
                       </div>
                     </div>
                     <Button
+                      type="button"
                       className="mt-6 mr-2 text-2xl"
                       variant="destructive"
                       onClick={() => removeExperience(index)}
@@ -715,6 +720,7 @@ export default function ProfileForm({ loggedUser }) {
             </div>
 
             <Button
+              type="button"
               className="my-4 text-md cursor-pointer border rounded-lg p-4"
               onClick={() =>
                 appendExperience({

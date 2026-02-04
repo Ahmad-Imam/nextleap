@@ -23,12 +23,12 @@ export default function SortResumes({ resumes, onSort }) {
   const handleSort = (sortType) => {
     setActiveSort(sortType);
 
-    const sortedJobs = [...resumes].sort((a, b) => {
+    const sortedResumes = [...resumes].sort((a, b) => {
       switch (sortType) {
         case "titleAsc":
-          return a.title.localeCompare(b.title);
+          return (a.name || "").localeCompare(b.name || "");
         case "titleDesc":
-          return b.title.localeCompare(a.title);
+          return (b.name || "").localeCompare(a.name || "");
         case "dateNewest":
           return (
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -42,7 +42,7 @@ export default function SortResumes({ resumes, onSort }) {
       }
     });
 
-    onSort(sortedJobs);
+    onSort(sortedResumes);
   };
 
   const getSortLabel = () => {
