@@ -20,13 +20,16 @@ import useFetch from "@/hooks/useFetch";
 import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
 
 export default function ProfileForm({ loggedUser }) {
   const router = useRouter();
+  const initialSkillTypes = Array.from(
+    new Set(["General", ...(loggedUser.skillTypes || []).filter(Boolean)]),
+  );
 
   const defaultValues = {
     bio: loggedUser.bio || "",
@@ -34,8 +37,12 @@ export default function ProfileForm({ loggedUser }) {
       ? loggedUser.socials
       : [{ name: "", url: "" }],
     skills: loggedUser.skills?.length
-      ? loggedUser.skills
-      : [{ name: "", exp: "", level: skillLevels[0] }],
+      ? loggedUser.skills.map((skill) => ({
+          ...skill,
+          type: skill?.type || "General",
+        }))
+      : [{ name: "", exp: "", level: skillLevels[0], type: "General" }],
+    skillTypes: initialSkillTypes.map((type) => ({ value: type })),
     education: loggedUser.education?.length ? loggedUser.education : [],
     experience: loggedUser.experience?.length ? loggedUser.experience : [],
     proj: loggedUser.proj?.length ? loggedUser.proj : [],
@@ -80,6 +87,15 @@ export default function ProfileForm({ loggedUser }) {
   });
 
   const {
+    fields: skillTypeFields,
+    append: appendSkillType,
+    remove: removeSkillType,
+  } = useFieldArray({
+    name: "skillTypes",
+    control,
+  });
+
+  const {
     fields: projectFields,
     append: appendProjects,
     remove: removeProjects,
@@ -104,6 +120,17 @@ export default function ProfileForm({ loggedUser }) {
     error: updateError,
   } = useFetch(updateUser);
 
+  const watchedSkillTypes = watch("skillTypes") || [];
+  const skillTypeOptions = useMemo(() => {
+    const values = watchedSkillTypes
+      .map((item) =>
+        typeof item === "string" ? item.trim() : item?.value?.trim(),
+      )
+      .filter(Boolean);
+
+    return Array.from(new Set(["General", ...values]));
+  }, [watchedSkillTypes]);
+
   const onSubmit = async (data) => {
     if (!data.socials || data.socials.length === 0) {
       toast.error("Please add at least one social link.");
@@ -114,7 +141,38 @@ export default function ProfileForm({ loggedUser }) {
       return;
     }
 
-    await updateFn(data);
+    const normalizedSkillTypes = Array.from(
+      new Set(
+        (data.skillTypes || [])
+          .map((item) =>
+            typeof item === "string" ? item.trim() : item?.value?.trim(),
+          )
+          .filter(Boolean),
+      ),
+    );
+
+    if (!normalizedSkillTypes.some((type) => type.toLowerCase() === "general")) {
+      normalizedSkillTypes.unshift("General");
+    }
+
+    const normalizedSkills = (data.skills || []).map((skill) => {
+      const selectedType =
+        typeof skill?.type === "string" ? skill.type.trim() : "";
+      const matchedType = normalizedSkillTypes.find(
+        (type) => type.toLowerCase() === selectedType.toLowerCase(),
+      );
+
+      return {
+        ...skill,
+        type: matchedType || "General",
+      };
+    });
+
+    await updateFn({
+      ...data,
+      skillTypes: normalizedSkillTypes,
+      skills: normalizedSkills,
+    });
     if (updateError) {
       toast.error("Error updating profile: " + updateError.message);
       return;
@@ -198,6 +256,48 @@ export default function ProfileForm({ loggedUser }) {
             </Button>
           </div>
 
+          {/* Skill Types */}
+          <div className="space-y-4 flex flex-col items-center">
+            <Label className={"text-xl font-bold"}>Skill Types</Label>
+            <div className="w-full flex flex-col gap-4">
+              {skillTypeFields.map((field, idx) => {
+                const currentValue = watch(`skillTypes.${idx}.value`) || "";
+                const isGeneral = currentValue.trim().toLowerCase() === "general";
+
+                return (
+                  <div key={field.id} className="flex gap-2 items-end w-full">
+                    <div className="flex flex-col flex-1 gap-2">
+                      <Label htmlFor={`skillTypes[${idx}].value`}>
+                        Type Name
+                      </Label>
+                      <Input
+                        {...register(`skillTypes.${idx}.value`)}
+                        id={`skillTypes[${idx}].value`}
+                        placeholder="e.g. Frontend, Backend, DevOps"
+                        readOnly={isGeneral}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      disabled={isGeneral}
+                      onClick={() => removeSkillType(idx)}
+                    >
+                      &minus;
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+            <Button
+              type="button"
+              variant=""
+              onClick={() => appendSkillType({ value: "" })}
+            >
+              Add Skill Type +
+            </Button>
+          </div>
+
           {/* Skills */}
           <div className="space-y-4 flex flex-col items-center ">
             <Label className={"text-xl font-bold"}>Skills</Label>
@@ -205,7 +305,7 @@ export default function ProfileForm({ loggedUser }) {
               {skillFields.map((field, idx) => (
                 <div
                   key={field.id}
-                  className="flex gap-2 items-end justify-between w-full"
+                  className="flex gap-2 items-end justify-between w-full flex-wrap"
                 >
                   <div className="flex flex-col gap-2">
                     <Label htmlFor={`skills[${idx}].name`}>Skill</Label>
@@ -264,6 +364,31 @@ export default function ProfileForm({ loggedUser }) {
                       </SelectContent>
                     </Select>
                   </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor={`skills[${idx}].type`}>Type</Label>
+                    <Select
+                      value={watch(`skills.${idx}.type`) || "General"}
+                      onValueChange={(value) =>
+                        setValue(`skills.${idx}.type`, value, {
+                          shouldValidate: true,
+                        })
+                      }
+                    >
+                      <SelectTrigger id={`skills[${idx}].type`} className="text-lg">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Skill Type</SelectLabel>
+                          {skillTypeOptions.map((type) => (
+                            <SelectItem key={type} value={type} className="text-lg">
+                              {type}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <Button
                     type="button"
                     variant="destructive"
@@ -279,7 +404,12 @@ export default function ProfileForm({ loggedUser }) {
               type="button"
               variant=""
               onClick={() =>
-                appendSkill({ name: "", exp: "", level: skillLevels[0] })
+                appendSkill({
+                  name: "",
+                  exp: "",
+                  level: skillLevels[0],
+                  type: "General",
+                })
               }
             >
               Add Skill +

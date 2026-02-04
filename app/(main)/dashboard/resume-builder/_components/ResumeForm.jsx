@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -37,6 +37,18 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
   const [newValues, setNewValues] = useState({});
 
   const skillLevels = ["Beginner", "Intermediate", "Advanced", "Expert"];
+  const skillTypeOptions = useMemo(() => {
+    const values = [
+      "General",
+      ...((loggedUser?.skillTypes || []).filter(Boolean) ?? []),
+      ...((loggedUser?.skills || [])
+        .map((skill) => skill?.type)
+        .filter(Boolean) ?? []),
+    ];
+
+    return Array.from(new Set(values));
+  }, [loggedUser?.skillTypes, loggedUser?.skills]);
+
   const router = useRouter();
   const {
     loading: updateLoading,
@@ -59,7 +71,10 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
       experience: loggedUser?.experience || [],
       proj: loggedUser?.proj || [],
       socials: loggedUser?.socials || [],
-      skills: loggedUser?.skills || [],
+      skills: (loggedUser?.skills || []).map((skill) => ({
+        ...skill,
+        type: skill?.type || "General",
+      })),
     },
   });
 
@@ -235,9 +250,42 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                           </SelectContent>
                         </Select>
                       </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`skills[${idx}].type`}>Type</Label>
+                        <Select
+                          value={watch(`skills.${idx}.type`) || "General"}
+                          onValueChange={(value) =>
+                            setValue(`skills.${idx}.type`, value, {
+                              shouldValidate: true,
+                            })
+                          }
+                        >
+                          <SelectTrigger
+                            id={`skills[${idx}].type`}
+                            className="text-lg"
+                          >
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Skill Type</SelectLabel>
+                              {skillTypeOptions.map((type) => (
+                                <SelectItem
+                                  key={type}
+                                  value={type}
+                                  className="text-lg"
+                                >
+                                  {type}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                     <div className="flex gap-2 mt-6 items-center justify-center">
                       <Button
+                        type="button"
                         className=" mr-2 text-2xl"
                         variant="destructive"
                         onClick={() => removeSkill(idx)}
@@ -265,12 +313,14 @@ export default function ResumeForm({ loggedUser, handleModeChange }) {
                 ))}
               </div>
               <Button
+                type="button"
                 className="my-4 text-md cursor-pointer border rounded-lg p-4"
                 onClick={() =>
                   appendSkill({
                     name: "",
                     exp: 0,
                     level: skillLevels[0],
+                    type: "General",
                   })
                 }
               >

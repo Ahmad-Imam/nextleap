@@ -17,6 +17,7 @@ model User {
   updatedAt     DateTime @updatedAt
   bio           String?
   socials       Json[]
+  skillTypes    String[] @default([])
   skills        Json[]
   education     Json[]
   experience    Json[]

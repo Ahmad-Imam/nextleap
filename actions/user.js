@@ -4,6 +4,62 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
+const GENERAL_SKILL_TYPE = "General";
+
+function normalizeSkillTypes(skillTypes) {
+  const rawValues = Array.isArray(skillTypes) ? skillTypes : [];
+
+  const normalized = rawValues
+    .map((item) => {
+      if (typeof item === "string") return item.trim();
+      if (item && typeof item === "object" && typeof item.value === "string") {
+        return item.value.trim();
+      }
+      return "";
+    })
+    .filter(Boolean);
+
+  const deduped = [...new Set(normalized.map((value) => value.toLowerCase()))].map(
+    (lowered) =>
+      normalized.find((value) => value.toLowerCase() === lowered) || lowered,
+  );
+
+  if (!deduped.some((value) => value.toLowerCase() === "general")) {
+    deduped.unshift(GENERAL_SKILL_TYPE);
+  }
+
+  return deduped;
+}
+
+function normalizeSkills(skills, validTypes) {
+  if (!Array.isArray(skills)) return [];
+
+  const loweredTypes = new Set(validTypes.map((value) => value.toLowerCase()));
+
+  return skills.map((skill) => {
+    if (!skill || typeof skill !== "object") {
+      return {
+        name: "",
+        exp: "",
+        level: "",
+        type: GENERAL_SKILL_TYPE,
+      };
+    }
+
+    const rawType = typeof skill.type === "string" ? skill.type.trim() : "";
+    const safeType =
+      rawType && loweredTypes.has(rawType.toLowerCase())
+        ? validTypes.find((value) => value.toLowerCase() === rawType.toLowerCase()) ||
+          rawType
+        : GENERAL_SKILL_TYPE;
+
+    return {
+      ...skill,
+      type: safeType,
+    };
+  });
+}
+
 export async function updateUserOnboard(data) {
   const { userId } = await auth();
 
@@ -20,12 +76,16 @@ export async function updateUserOnboard(data) {
   }
 
   try {
+    const skillTypes = normalizeSkillTypes(data?.skillTypes ?? user.skillTypes ?? []);
+    const skills = normalizeSkills(data?.skills, skillTypes);
+
     const updatedUser = await db.user.update({
       where: { id: user.id },
       data: {
         socials: data.socials,
         bio: data.bio,
-        skills: data.skills,
+        skills,
+        skillTypes,
       },
     });
     return { success: true, user: updatedUser };
@@ -90,10 +150,23 @@ export async function updateUser(formData) {
   }
 
   try {
+    const payload = { ...formData };
+
+    if ("skillTypes" in formData || "skills" in formData) {
+      const skillTypes = normalizeSkillTypes(
+        formData.skillTypes ?? user.skillTypes ?? [],
+      );
+      payload.skillTypes = skillTypes;
+
+      if ("skills" in formData) {
+        payload.skills = normalizeSkills(formData.skills, skillTypes);
+      }
+    }
+
     const updatedUser = await db.user.update({
       where: { id: user.id },
       data: {
-        ...formData,
+        ...payload,
       },
     });
     return { success: true, user: updatedUser };
