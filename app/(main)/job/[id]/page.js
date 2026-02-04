@@ -1,4 +1,6 @@
 import { getJobPostById } from "@/actions/job";
+import { getUserResumes } from "@/actions/user";
+import JobAtsScore from "./_components/JobAtsScore";
 import JobCoverLetter from "./_components/JobCoverLetter";
 import JobDetails from "./_components/JobDetails";
 
@@ -10,13 +12,17 @@ export const metadata = {
 export default async function JobSinglePage({ params }) {
   const { id } = await params;
 
-  const jobPost = await getJobPostById(id);
+  const [jobPost, userResumes] = await Promise.all([
+    getJobPostById(id),
+    getUserResumes(),
+  ]);
 
   return (
     <main className="flex items-center justify-center min-h-screen pt-10">
       {jobPost && (
         <div className="flex flex-col gap-10">
           <JobDetails jobPost={jobPost} />
+          <JobAtsScore jobId={id} resumes={userResumes?.resume || []} />
           <JobCoverLetter jobPost={jobPost} />
         </div>
       )}
