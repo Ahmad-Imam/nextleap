@@ -18,9 +18,9 @@ export default async function JobSinglePage({ params }) {
   ]);
 
   return (
-    <main className="flex items-center justify-center min-h-screen pt-10">
+    <main className="min-h-screen w-full px-4 pb-10 pt-6 sm:px-6 lg:px-8">
       {jobPost && (
-        <div className="flex flex-col gap-10">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
           <JobDetails jobPost={jobPost} />
           <JobAtsScore jobId={id} resumes={userResumes?.resume || []} />
           <JobCoverLetter jobPost={jobPost} />
@@ -28,7 +28,7 @@ export default async function JobSinglePage({ params }) {
       )}
 
       {!jobPost && (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
           <h1 className="text-2xl font-bold">Job Not Found</h1>
           <p className="mt-2 text-lg">
             The job you are looking for does not exist.

@@ -87,7 +87,7 @@ export default function JobAtsScore({ jobId, resumes = [] }) {
   }
 
   return (
-    <Card className="mx-4">
+    <Card>
       <CardHeader>
         <CardTitle>ATS Resume Match</CardTitle>
         <CardDescription>
@@ -126,7 +126,7 @@ export default function JobAtsScore({ jobId, resumes = [] }) {
                 </Select>
               </div>
               <Button
-                className="md:min-w-[140px]"
+                className="w-full md:min-w-[140px] md:w-auto"
                 disabled={atsLoading || !selectedResumeId}
                 onClick={handleAnalyzeAts}
               >
@@ -143,8 +143,8 @@ export default function JobAtsScore({ jobId, resumes = [] }) {
 
             {atsData && (
               <div className="space-y-6">
-                <div className="rounded-lg border p-4 space-y-3">
-                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="space-y-3 rounded-lg border p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Overall Score</p>
                       <p
@@ -157,7 +157,7 @@ export default function JobAtsScore({ jobId, resumes = [] }) {
                         <span className="text-xl text-muted-foreground"> / 100</span>
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <p className="text-sm text-muted-foreground">Resume</p>
                       <p className="font-medium">{atsData.resumeName || selectedResume?.name}</p>
                     </div>
@@ -172,7 +172,7 @@ export default function JobAtsScore({ jobId, resumes = [] }) {
                     if (!category) return null;
                     return (
                       <div key={key} className="space-y-2">
-                        <div className="flex items-center justify-between gap-3">
+                        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                           <p className="text-sm font-medium">{CATEGORY_LABELS[key]}</p>
                           <p className="text-sm text-muted-foreground">
                             {category.score}/100 • wt {category.weight}% • +{category.contribution}

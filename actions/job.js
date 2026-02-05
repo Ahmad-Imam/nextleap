@@ -3,6 +3,18 @@
 import { db } from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
+import {
+  coverLetterJobInputSchema,
+  createJobPostSchema,
+  deleteJobPostInputSchema,
+  generateJobPostInputSchema,
+  jobIdSchema,
+  timelinePointSchema,
+  updateJobPostInputSchema,
+  updateBookmarkInputSchema,
+  updateCoverLetterInputSchema,
+  updateJobNotesInputSchema,
+} from "@/lib/validators/job";
 import { getUser } from "./user";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -29,6 +41,15 @@ function cleanModelJson(text) {
     }
     return JSON.parse(match[0]);
   }
+}
+
+function parseOrThrow(schema, input) {
+  const parsed = schema.safeParse(input);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  const message = parsed.error.issues?.[0]?.message || "Invalid input data";
+  throw new Error(message);
 }
 
 function compactHtmlForPrompt(html) {
@@ -76,7 +97,12 @@ function formatMultilineField(value) {
 }
 
 export async function generateJobPost(url) {
-  const urlResponse = await fetch(url.url);
+  const input = parseOrThrow(generateJobPostInputSchema, url);
+
+  const urlResponse = await fetch(input.url);
+  if (!urlResponse.ok) {
+    throw new Error("Unable to fetch and parse the job URL.");
+  }
   const html = compactHtmlForPrompt(await urlResponse.text());
 
   const prompt = `
@@ -124,12 +150,10 @@ export async function addJobPost(jobPost) {
   if (!user.id) {
     throw new Error("User not found");
   }
-  if (!jobPost) {
-    throw new Error("Job post data is required");
-  }
+  const parsedJobPost = parseOrThrow(createJobPostSchema, jobPost);
 
   const updatedJobPost = {
-    ...jobPost,
+    ...parsedJobPost,
     userId: user.id,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -142,6 +166,87 @@ export async function addJobPost(jobPost) {
   });
 
   return newJobPost;
+}
+
+export async function updateJobPost(jobId, jobPost) {
+  const user = await getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const parsedInput = parseOrThrow(updateJobPostInputSchema, {
+    jobId,
+    jobPost,
+  });
+
+  const updatedJobPost = await db.job.update({
+    where: {
+      id: parsedInput.jobId,
+      userId: user.id,
+    },
+    data: {
+      ...parsedInput.jobPost,
+      updatedAt: new Date(),
+    },
+  });
+
+  revalidatePath(`/job/${parsedInput.jobId}`);
+  revalidatePath(`/job/${parsedInput.jobId}/edit`);
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/jobs");
+  revalidatePath("/dashboard/bookmarks");
+  revalidatePath("/dashboard/applications");
+
+  return updatedJobPost;
+}
+
+export async function deleteJobPost(jobId) {
+  const user = await getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const parsedInput = parseOrThrow(deleteJobPostInputSchema, { jobId });
+
+  await db.job.delete({
+    where: {
+      id: parsedInput.jobId,
+      userId: user.id,
+    },
+  });
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/jobs");
+  revalidatePath("/dashboard/bookmarks");
+  revalidatePath("/dashboard/applications");
+
+  return { success: true };
+}
+
+export async function updateJobNotes(jobId, notes) {
+  const user = await getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const parsedInput = parseOrThrow(updateJobNotesInputSchema, { jobId, notes });
+
+  const updatedJobPost = await db.job.update({
+    where: {
+      id: parsedInput.jobId,
+      userId: user.id,
+    },
+    data: {
+      notes: parsedInput.notes,
+      updatedAt: new Date(),
+    },
+  });
+
+  revalidatePath(`/job/${parsedInput.jobId}`);
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/jobs");
+
+  return { success: true, notes: updatedJobPost.notes };
 }
 
 export async function getJobPosts() {
@@ -167,6 +272,7 @@ export async function getJobPosts() {
 
 export async function getJobPostById(id) {
   const user = await getUser();
+  const parsedJobId = parseOrThrow(jobIdSchema, id);
 
   if (!user) {
     throw new Error("User not authenticated");
@@ -177,7 +283,7 @@ export async function getJobPostById(id) {
 
   const jobPost = await db.job.findUnique({
     where: {
-      id: id,
+      id: parsedJobId,
       userId: user.id,
     },
   });
@@ -187,61 +293,66 @@ export async function getJobPostById(id) {
 
 export async function addTimelinePoint(jobId, newTimelinePoint) {
   const user = await getUser();
+  const parsedJobId = parseOrThrow(jobIdSchema, jobId);
+  const parsedTimelinePoint = parseOrThrow(timelinePointSchema, newTimelinePoint);
+
+  const normalizedTimelinePoint = {
+    ...parsedTimelinePoint,
+    date: parsedTimelinePoint.date.toISOString(),
+    position: parsedTimelinePoint.position || "left",
+  };
+
   if (!user) {
     throw new Error("User not authenticated");
   }
   if (!user.id) {
     throw new Error("User not found");
   }
-  if (!jobId) {
-    throw new Error("Job ID is required");
-  }
-  if (!newTimelinePoint) {
-    throw new Error("Timeline point data is required");
-  }
 
   const updatedJobPost = await db.job.update({
     where: {
-      id: jobId,
+      id: parsedJobId,
       userId: user.id,
     },
     data: {
-      status: newTimelinePoint.type,
+      status: normalizedTimelinePoint.type,
       timeline: {
-        push: newTimelinePoint,
+        push: normalizedTimelinePoint,
       },
     },
   });
-  revalidatePath(`/job/${jobId}`);
+  revalidatePath(`/job/${parsedJobId}`);
   revalidatePath("/dashboard");
 
-  return newTimelinePoint;
+  return normalizedTimelinePoint;
 }
 
 export async function updateJobBookmark(jobId, isBookmark) {
   const user = await getUser();
+  const parsedInput = parseOrThrow(updateBookmarkInputSchema, {
+    jobId,
+    isBookmark,
+  });
+
   if (!user) {
     throw new Error("User not authenticated");
   }
   if (!user.id) {
     throw new Error("User not found");
   }
-  if (!jobId) {
-    throw new Error("Job ID is required");
-  }
 
   const updatedJobPost = await db.job.update({
     where: {
-      id: jobId,
+      id: parsedInput.jobId,
       userId: user.id,
     },
     data: {
-      isBookmark: isBookmark,
+      isBookmark: parsedInput.isBookmark,
       updatedAt: new Date(),
     },
   });
 
-  revalidatePath(`/job/${jobId}`);
+  revalidatePath(`/job/${parsedInput.jobId}`);
 
   return updatedJobPost;
 }
@@ -332,23 +443,126 @@ export async function getUpcomingInterviewsForUser() {
   return upcomingInterviews;
 }
 
+function getSubmittedDateFromJob(job) {
+  if (Array.isArray(job.timeline)) {
+    const appliedEvents = job.timeline
+      .filter((item) => item?.type === "applied" && item?.date)
+      .map((item) => new Date(item.date))
+      .filter((date) => !Number.isNaN(date.getTime()))
+      .sort((a, b) => a - b);
+
+    if (appliedEvents.length > 0) {
+      return appliedEvents[0];
+    }
+  }
+
+  const fallbackDate = new Date(job.updatedAt || job.createdAt);
+  return Number.isNaN(fallbackDate.getTime()) ? null : fallbackDate;
+}
+
+function getWeekStart(date) {
+  const start = new Date(date);
+  const day = start.getDay();
+  const diff = day === 0 ? -6 : 1 - day; // Monday start
+  start.setDate(start.getDate() + diff);
+  start.setHours(0, 0, 0, 0);
+  return start;
+}
+
+function getMonthStart(date) {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  start.setHours(0, 0, 0, 0);
+  return start;
+}
+
+export async function getApplicationLimitAnalytics() {
+  const user = await getUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const submittedJobs = await db.job.findMany({
+    where: {
+      userId: user.id,
+      NOT: {
+        status: "open",
+      },
+    },
+    select: {
+      createdAt: true,
+      updatedAt: true,
+      timeline: true,
+      status: true,
+    },
+  });
+
+  const now = new Date();
+  const weekStart = getWeekStart(now);
+  const monthStart = getMonthStart(now);
+
+  let weeklySubmittedCount = 0;
+  let monthlySubmittedCount = 0;
+
+  submittedJobs.forEach((job) => {
+    const submittedDate = getSubmittedDateFromJob(job);
+    if (!submittedDate) return;
+
+    if (submittedDate >= weekStart && submittedDate <= now) {
+      weeklySubmittedCount += 1;
+    }
+
+    if (submittedDate >= monthStart && submittedDate <= now) {
+      monthlySubmittedCount += 1;
+    }
+  });
+
+  const weeklyLimit = user.weeklyApplicationLimit ?? null;
+  const monthlyLimit = user.monthlyApplicationLimit ?? null;
+
+  const weeklyRemaining =
+    weeklyLimit !== null ? Math.max(weeklyLimit - weeklySubmittedCount, 0) : null;
+  const monthlyRemaining =
+    monthlyLimit !== null ? Math.max(monthlyLimit - monthlySubmittedCount, 0) : null;
+
+  const weeklyProgress =
+    weeklyLimit && weeklyLimit > 0
+      ? Math.min(Math.round((weeklySubmittedCount / weeklyLimit) * 100), 100)
+      : null;
+  const monthlyProgress =
+    monthlyLimit && monthlyLimit > 0
+      ? Math.min(Math.round((monthlySubmittedCount / monthlyLimit) * 100), 100)
+      : null;
+
+  return {
+    weekly: {
+      submitted: weeklySubmittedCount,
+      limit: weeklyLimit,
+      remaining: weeklyRemaining,
+      progress: weeklyProgress,
+    },
+    monthly: {
+      submitted: monthlySubmittedCount,
+      limit: monthlyLimit,
+      remaining: monthlyRemaining,
+      progress: monthlyProgress,
+    },
+  };
+}
+
 export async function generateCoverLetter(job) {
   const user = await getUser();
+  const parsedJob = parseOrThrow(coverLetterJobInputSchema, job);
 
   const jobContext = {
-    jobTitle: job?.jobTitle || null,
-    companyName: job?.companyName || null,
-    location: job?.location || null,
-    industry: job?.industry || null,
-    level: job?.level || null,
-    jobType: job?.jobType || null,
-    jobDescription: job?.jobDescription || null,
-    jobRequirements: Array.isArray(job?.jobRequirements)
-      ? job.jobRequirements.slice(0, 10)
-      : [],
-    responsibilities: Array.isArray(job?.responsibilities)
-      ? job.responsibilities.slice(0, 10)
-      : [],
+    jobTitle: parsedJob.jobTitle || null,
+    companyName: parsedJob.companyName || null,
+    location: parsedJob.location || null,
+    industry: parsedJob.industry || null,
+    level: parsedJob.level || null,
+    jobType: parsedJob.jobType || null,
+    jobDescription: parsedJob.jobDescription || null,
+    jobRequirements: parsedJob.jobRequirements.slice(0, 10),
+    responsibilities: parsedJob.responsibilities.slice(0, 10),
   };
 
   const userContext = {
@@ -401,37 +615,36 @@ Output rules:
     throw new Error("Error generating cover letter: No response from AI model");
   }
 
-  const updatedJobPost = await updateCoverLetter(job.id, cleanedText);
+  const updatedJobPost = await updateCoverLetter(parsedJob.id, cleanedText);
 
   if (!updatedJobPost) {
     throw new Error("Error updating cover letter in the database");
   }
-  revalidatePath(`/job/${job.id}`);
+  revalidatePath(`/job/${parsedJob.id}`);
   return cleanedText;
 }
 
 export async function updateCoverLetter(jobId, coverLetter) {
   const user = await getUser();
+  const parsedInput = parseOrThrow(updateCoverLetterInputSchema, {
+    jobId,
+    coverLetter,
+  });
+
   if (!user) {
     throw new Error("User not authenticated");
   }
   if (!user.id) {
     throw new Error("User not found");
   }
-  if (!jobId) {
-    throw new Error("Job ID is required");
-  }
-  if (!coverLetter) {
-    throw new Error("Cover letter data is required");
-  }
 
   const updatedJobPost = await db.job.update({
     where: {
-      id: jobId,
+      id: parsedInput.jobId,
       userId: user.id,
     },
     data: {
-      coverLetter: coverLetter,
+      coverLetter: parsedInput.coverLetter,
       updatedAt: new Date(),
     },
   });

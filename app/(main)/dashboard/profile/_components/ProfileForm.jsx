@@ -33,6 +33,8 @@ export default function ProfileForm({ loggedUser }) {
 
   const defaultValues = {
     bio: loggedUser.bio || "",
+    weeklyApplicationLimit: loggedUser.weeklyApplicationLimit ?? "",
+    monthlyApplicationLimit: loggedUser.monthlyApplicationLimit ?? "",
     socials: loggedUser.socials?.length
       ? loggedUser.socials
       : [{ name: "", url: "" }],
@@ -151,7 +153,9 @@ export default function ProfileForm({ loggedUser }) {
       ),
     );
 
-    if (!normalizedSkillTypes.some((type) => type.toLowerCase() === "general")) {
+    if (
+      !normalizedSkillTypes.some((type) => type.toLowerCase() === "general")
+    ) {
       normalizedSkillTypes.unshift("General");
     }
 
@@ -211,6 +215,46 @@ export default function ProfileForm({ loggedUser }) {
             )}
           </div>
 
+          {/* Application Limits */}
+          <div className="space-y-4">
+            <Label className={"text-xl font-bold"}>Application Targets</Label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="weeklyApplicationLimit">
+                  Weekly Submitted Targets
+                </Label>
+                <Input
+                  id="weeklyApplicationLimit"
+                  type="number"
+                  min={0}
+                  placeholder="e.g. 15"
+                  {...register("weeklyApplicationLimit", {
+                    setValueAs: (value) =>
+                      value === "" ? null : Number(value),
+                  })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="monthlyApplicationLimit">
+                  Monthly Submitted Targets
+                </Label>
+                <Input
+                  id="monthlyApplicationLimit"
+                  type="number"
+                  min={0}
+                  placeholder="e.g. 60"
+                  {...register("monthlyApplicationLimit", {
+                    setValueAs: (value) =>
+                      value === "" ? null : Number(value),
+                  })}
+                />
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Targets track submitted applications (all non-open jobs).
+            </p>
+          </div>
+
           {/* Socials */}
           <div className="space-y-4 flex flex-col items-center">
             <Label className={"text-xl font-bold"}>Socials</Label>
@@ -262,7 +306,8 @@ export default function ProfileForm({ loggedUser }) {
             <div className="w-full flex flex-col gap-4">
               {skillTypeFields.map((field, idx) => {
                 const currentValue = watch(`skillTypes.${idx}.value`) || "";
-                const isGeneral = currentValue.trim().toLowerCase() === "general";
+                const isGeneral =
+                  currentValue.trim().toLowerCase() === "general";
 
                 return (
                   <div key={field.id} className="flex gap-2 items-end w-full">
@@ -374,14 +419,21 @@ export default function ProfileForm({ loggedUser }) {
                         })
                       }
                     >
-                      <SelectTrigger id={`skills[${idx}].type`} className="text-lg">
+                      <SelectTrigger
+                        id={`skills[${idx}].type`}
+                        className="text-lg"
+                      >
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Skill Type</SelectLabel>
                           {skillTypeOptions.map((type) => (
-                            <SelectItem key={type} value={type} className="text-lg">
+                            <SelectItem
+                              key={type}
+                              value={type}
+                              className="text-lg"
+                            >
                               {type}
                             </SelectItem>
                           ))}
@@ -510,7 +562,7 @@ export default function ProfileForm({ loggedUser }) {
                           setDate={(date) =>
                             setValue(
                               `education[${index}].startDate`,
-                              date ? format(date, "yyyy-MM-dd") : ""
+                              date ? format(date, "yyyy-MM-dd") : "",
                             )
                           }
                         />
@@ -540,7 +592,7 @@ export default function ProfileForm({ loggedUser }) {
                           setDate={(date) =>
                             setValue(
                               `education[${index}].endDate`,
-                              date ? format(date, "yyyy-MM-dd") : ""
+                              date ? format(date, "yyyy-MM-dd") : "",
                             )
                           }
                         />
@@ -784,14 +836,14 @@ export default function ProfileForm({ loggedUser }) {
                           date={
                             watch(`experience[${index}].startDate`)
                               ? new Date(
-                                  watch(`experience[${index}].startDate`)
+                                  watch(`experience[${index}].startDate`),
                                 )
                               : undefined
                           }
                           setDate={(date) =>
                             setValue(
                               `experience[${index}].startDate`,
-                              date ? format(date, "yyyy-MM-dd") : ""
+                              date ? format(date, "yyyy-MM-dd") : "",
                             )
                           }
                         />
@@ -822,7 +874,7 @@ export default function ProfileForm({ loggedUser }) {
                           setDate={(date) =>
                             setValue(
                               `experience[${index}].endDate`,
-                              date ? format(date, "yyyy-MM-dd") : ""
+                              date ? format(date, "yyyy-MM-dd") : "",
                             )
                           }
                         />

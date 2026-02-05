@@ -1,9 +1,11 @@
 import {
+  getApplicationLimitAnalytics,
   getJobPostByBookmark,
   getJobPosts,
   getJobPostsByApplication,
   getUpcomingInterviewsForUser,
 } from "@/actions/job";
+import { ApplicationLimits } from "./_components/ApplicationLimits";
 import { getUserResumes } from "@/actions/user";
 import { DashboardHeader } from "./_components/DashboardHeader";
 import DashboardTab from "./_components/DashboardTabs/DashboardTab";
@@ -15,15 +17,21 @@ export const metadata = {
 };
 
 export default async function DashboardPage() {
-  const allJobPosts = await getJobPosts();
-
-  const bookmarkedJobPosts = await getJobPostByBookmark();
-
-  const applicationJobPosts = await getJobPostsByApplication();
-
-  const upcomingInterviews = await getUpcomingInterviewsForUser();
-
-  const userResumes = await getUserResumes();
+  const [
+    allJobPosts,
+    bookmarkedJobPosts,
+    applicationJobPosts,
+    upcomingInterviews,
+    userResumes,
+    applicationAnalytics,
+  ] = await Promise.all([
+    getJobPosts(),
+    getJobPostByBookmark(),
+    getJobPostsByApplication(),
+    getUpcomingInterviewsForUser(),
+    getUserResumes(),
+    getApplicationLimitAnalytics(),
+  ]);
 
   return (
     <div className="p-4 mx-auto w-full flex flex-col gap-4 md:gap-6 lg:gap-10 items-start justify-between">
@@ -33,6 +41,8 @@ export default async function DashboardPage() {
         bookmarkedJobsCount={bookmarkedJobPosts.length || 0}
         resumesCount={userResumes?.resume.length || 0}
       />
+
+      <ApplicationLimits analytics={applicationAnalytics} />
 
       <DashboardTab
         allJobPosts={allJobPosts}

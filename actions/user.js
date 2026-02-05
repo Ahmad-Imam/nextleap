@@ -60,6 +60,17 @@ function normalizeSkills(skills, validTypes) {
   });
 }
 
+function normalizeApplicationLimit(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+
+  return Math.max(0, Math.round(parsed));
+}
+
 export async function updateUserOnboard(data) {
   const { userId } = await auth();
 
@@ -161,6 +172,18 @@ export async function updateUser(formData) {
       if ("skills" in formData) {
         payload.skills = normalizeSkills(formData.skills, skillTypes);
       }
+    }
+
+    if ("weeklyApplicationLimit" in formData) {
+      payload.weeklyApplicationLimit = normalizeApplicationLimit(
+        formData.weeklyApplicationLimit,
+      );
+    }
+
+    if ("monthlyApplicationLimit" in formData) {
+      payload.monthlyApplicationLimit = normalizeApplicationLimit(
+        formData.monthlyApplicationLimit,
+      );
     }
 
     const updatedUser = await db.user.update({

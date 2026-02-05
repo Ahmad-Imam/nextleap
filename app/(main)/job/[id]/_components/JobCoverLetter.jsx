@@ -36,11 +36,11 @@ export default function JobCoverLetter({ jobPost }) {
   }
 
   return (
-    <Card className={"mx-4"}>
-      <CardHeader className={"flex flex-row justify-center"}>
+    <Card>
+      <CardHeader className="flex flex-row justify-center px-4 sm:px-6">
         <Button
           variant=""
-          className="font-semibold text-lg p-6"
+          className="w-full max-w-md p-5 text-base font-semibold sm:text-lg"
           disabled={isLoadingCoverLetter}
           onClick={handleGenerateCoverLetter}
         >
@@ -48,7 +48,7 @@ export default function JobCoverLetter({ jobPost }) {
         </Button>
       </CardHeader>
 
-      <CardContent className="w-full">
+      <CardContent className="w-full px-4 sm:px-6">
         <h2 className="text-lg font-bold">Generated Cover Letter</h2>
         <p className="my-2 text-md whitespace-pre-wrap">
           {coverLetter || "No cover letter generated yet."}

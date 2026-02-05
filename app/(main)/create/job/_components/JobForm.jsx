@@ -45,6 +45,7 @@ export default function JobForm() {
       jobType: "",
       level: "",
       industry: "",
+      notes: "",
       responsibilities: [""],
     },
   });
@@ -97,6 +98,7 @@ export default function JobForm() {
         "jobType",
         "level",
         "industry",
+        "notes",
         "responsibilities",
       ].forEach((field) => {
         if (updateUrlResult[field]) {
@@ -305,6 +307,20 @@ export default function JobForm() {
                       placeholder="Enter industry"
                       {...field}
                       required
+                    />
+                  )}
+                />
+              </div>
+              <div>
+                <label className="block mb-2">Notes</label>
+                <Controller
+                  name="notes"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      className="w-full border rounded p-2"
+                      placeholder="Add any personal notes for this job"
+                      {...field}
                     />
                   )}
                 />

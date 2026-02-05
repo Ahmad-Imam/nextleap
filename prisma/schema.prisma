@@ -16,6 +16,8 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   bio           String?
+  weeklyApplicationLimit  Int?
+  monthlyApplicationLimit Int?
   socials       Json[]
   skillTypes    String[] @default([])
   skills        Json[]
@@ -57,6 +59,7 @@ model Job {
   coverLetterId    String?
   jobRequirements  String[]
   responsibilities String[]
+  notes            String?
   isBookmark       Boolean  @default(false)
   timeline         Json[]
   coverLetter      String?
